@@ -1,0 +1,1392 @@
+'use strict';
+
+try{
+document.domain="gov.on.ca";
+}catch(e){ console && console.log(e)}
+
+var pnpSessionId = '';
+var pnpTokenId  = '';
+var oinpContextRoot  = '';
+//var onekeySigninSrc =  __env.onekeySigninSrc  ;  //'https://stage.one-key.gov.on.ca/iaalogin/if_onekeylogin.jsp?REDID=OINP';
+//var onekeySignupSrc = __env.onekeySignupSrc   ; //'https://stage.appenrol.one-key.gov.on.ca/UserMgmtWebApp/registration.iaa?clientType=iFRegistration&REDID=OINP';
+var oinpContextRoot = __env.oinpContextRoot   ;//'/public/dynamicform/' ;
+
+var oinpStorage = sessionStorage; //localStorage;
+
+// Declare app level module which depends on views, and components
+var oinpApp = angular.module('oinpApp', [
+  'ngRoute',
+  //'oinpApp.controllers',
+  'ui.bootstrap',
+  'ngIdle',
+  'pascalprecht.translate',
+  'jcs-autoValidate',
+  'growlNotifications',
+  'vcRecaptcha',
+  //'ngSanitize'
+]).
+config(['$locationProvider', '$routeProvider', 'IdleProvider', 'KeepaliveProvider','$translateProvider',
+        function($locationProvider, $routeProvider,IdleProvider, KeepaliveProvider,translateProvider) {
+  $locationProvider.hashPrefix('!');
+  
+
+  
+ $routeProvider
+	.when("/", {
+		templateUrl :  "captcha.html",
+		title : 'Captcha',
+		requiretoken : false
+	       })
+  	.when("/:lang/:pathcode", {
+			templateUrl :  "captcha.html",
+			title : 'Captcha',
+			requiretoken : false
+		       })
+  	.when("/queue", {   ///:lang/:pathcode
+			templateUrl :  "queue.html",
+			title : 'Queue',
+			requiretoken : true
+		       })
+    .when("/stream", {
+    	    title : 'Select Stream',
+			templateUrl :  "selectstream.html",
+			requiretoken : true
+		       })		       
+  	.when("/whoareu", {
+  		    title : 'Existing User or Returning User?',
+			templateUrl :  "whoareu.html",
+			requiretoken : true
+		       })
+  	.when("/signin", {
+  		    title : 'One Key Sign in',
+			templateUrl :  "onekeysignin.html",
+			requiretoken : true
+		       })		       
+   		       
+  	.when("/register", {
+  		    title : 'Provide user information - short form',
+			templateUrl : "register.html",
+			requiretoken : true
+		       })		 
+	  	.when("/jump/:lang/:pathcode", {
+			//templateUrl :  "",
+			title : 'Jump',
+			requiretoken : false,
+			controller : 'JumpCtrl'
+		       })
+		       
+  	.when("/french", {
+  		    title : 'Captcha',
+			templateUrl : "captcha.html",
+			requiretoken : false
+			/*controller  :  'QueueCtrl',
+			resolve : {
+			    locale  :  function(){
+			    	return 'fr';
+			    }	
+			}*/
+		  })		 
+		       
+    .otherwise({redirectTo: '/'});
+}]);
+/*
+oinpApp.controller('ModalInstanceCtrl',  ['$scope', '$modalInstance', 'modalData', function($scope, $modalInstance, modalData){
+	
+	}]);
+*/
+
+
+
+oinpApp.factory('jcsValidationMessageResolver', [
+      '$q', '$translate',
+      function ($q, $translate) {
+    	  var getMessageTypeOverride = function (errorType, el) {
+    	      var overrideKey;
+
+    	      if (el) {
+    	        // try and find an attribute which overrides the given error type in the form of errorType-err-type="someMsgKey"
+    	        errorType += '-err-type';
+
+
+    	        overrideKey = el.attr('ng-' + errorType);
+    	        if (overrideKey === undefined) {
+    	          overrideKey = el.attr('data-ng-' + errorType) || el.attr(errorType);
+    	        }
+
+    	        if (overrideKey) {
+    	          overrideKey = overrideKey.replace(/[^A-Za-z0-9_\.]/g, '');
+    	        }
+    	      }
+
+    	      return overrideKey;
+    	    }
+    	  
+    	  
+          /**
+          * @ngdoc function
+          * @name defaultErrorMessageResolver#resolve
+          * @methodOf defaultErrorMessageResolver
+          *
+          * @description
+          * Resolves a validate error type into a user validation error message
+          *
+          * @param {String} errorType - The type of validation error that has occurred.
+          * @param {Element} el - The input element that is the source of the validation error.
+          * @returns {Promise} A promise that is resolved when the validation message has been produced.
+          */
+          var resolve = function (errorType, el) {
+              var defer = $q.defer();
+              
+              var msg = $translate.instant(getMessageTypeOverride(errorType,el));
+
+              defer.resolve(msg);
+
+              return defer.promise;
+          };
+
+          return {
+              resolve: resolve
+          };
+      }
+  ]);
+
+
+oinpApp.config(['$httpProvider', '$translateProvider', 'IdleProvider', 'KeepaliveProvider', '$translatePartialLoaderProvider' , 
+                function($httpProvider,$translateProvider,IdleProvider, KeepaliveProvider ,$translatePartialLoaderProvider) {
+	$httpProvider.defaults.cache = false;
+	if (!$httpProvider.defaults.headers.get) {
+		$httpProvider.defaults.headers.get = {};
+	}
+	// disable IE ajax request caching
+	$httpProvider.defaults.headers.get['If-Modified-Since'] = 'Fri, 01 Jan 2010 00:00:00 GMT';
+	$httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+	$httpProvider.defaults.headers.get['Pragma'] = 'no-cache';	  
+	
+	
+	  $translateProvider.useLoader('$translatePartialLoader', {
+			urlTemplate: '{part}.{lang}.txt'
+		});
+
+	  $translateProvider.useSanitizeValueStrategy('escaped'); //sanitize, escape
+	  
+	  var storedLang = localStorage.getItem('oinp.user.lang');
+	  var langToUse = (storedLang!=null) ? storedLang : 'en';
+	  
+	  
+	  $translatePartialLoaderProvider.addPart('gate');
+	  $translatePartialLoaderProvider.addPart('notice');
+
+	  $translateProvider.use(langToUse);
+	  $translateProvider.preferredLanguage(langToUse);
+		//$translateProvider.useLoaderCache(true);
+	  $translateProvider.forceAsyncReload(true);
+		
+		
+	 KeepaliveProvider.interval(10);
+	 IdleProvider.windowInterrupt(null);
+	}
+]);
+
+
+oinpApp.factory('idleService',  [   '$rootScope','$uibModal', '$http', 'Keepalive', 'Idle', '$window' ,'$translate', '$translatePartialLoader' , '$location', 
+                      function ( $rootScope,$uibModal, $http, Keepalive , Idle ,$window,  $translate, $translatePartialLoader, $location ) {
+		  
+								 $translatePartialLoader.addPart('common');
+ 								  $translate.refresh();
+
+	
+	                              var timeoutModalInstance;
+	                              $rootScope.timedout = false;
+	
+	                              $rootScope.needMoreTime = function(){
+	                            	  $http.get("../global/timeoutAlert.html")
+	                            	    .then(function(response) {
+	                            	        console && console.log('alive ping');
+	                            	        Idle.interrupt1();
+	                            	        timeoutModalInstance.dismiss(function(){});
+	                            	    });
+	                              };
+	                              $rootScope.logoutRedirect = function(){
+	                            	 // $rootScope.$broadcast('logoutImmediately',{redirect:true});
+	                            	  timeoutModalInstance.dismiss(function(){});
+	                            	  Idle.unwatch();
+	                            	  $location.path('/');
+	                              };
+	                              
+	                              $rootScope.timeoutLogout = function(){
+	                            	  Idle.unwatch();
+	                            	  //$window.location.href = $rootScope._logoutUrl;
+	                            	  timeoutModalInstance.dismiss(function(){});
+	                            	  $location.path('/');
+	                              }
+	                              
+	                              function addEvent(event){
+	                            	 // console.log( event);
+	                              }
+	                              
+	                              function showTimeoutDialog(){
+                             		 Idle.setAcceptInterrupt(false);
+
+	                            	  if($rootScope.modalOpen) return;
+	                            	  
+	                            	  var modalInstance = $uibModal.open({
+	                          			templateUrl : '../global/timeoutAlert.html',
+	                          			//controller: 'ModalInstanceCtrl',
+	                          			backdrop : 'static',
+	                          			resolve: {
+	                          				countdown: function () {
+	                          					return $rootScope.countdown;
+	                          				},
+	                          				items :  function(){
+	                          					return $rootScope.items;
+	                          				}
+	                          			}
+	                          		}); 
+	                            	  
+	                            	modalInstance.opened.then(function () {
+	                            		$rootScope.modalOpen = true;
+	                            		timeoutModalInstance = modalInstance;
+	                            	});
+	                            	  
+	                          		modalInstance.result.then(function (selectedItem) {
+	                          			$rootScope.selected = selectedItem;
+	                          		}, function () {
+	                          			$rootScope.modalOpen = false;
+	                          		});
+	                              }
+	                              
+                                 var start = function (Idle){
+	                            	  
+                                	  $rootScope.$on('IdleStart', function() {
+                                          addEvent({event: 'IdleStart', date: new Date()});
+                                        });
+
+                                	  $rootScope.$on('IdleEnd', function() {
+                                          addEvent({event: 'IdleEnd', date: new Date()});
+                                        });
+
+                                	  $rootScope.$on('IdleWarn', function(e, countdown) {
+                                		  $rootScope.countdown = countdown;
+                                          addEvent({event: 'IdleWarn', date: new Date(), countdown: countdown});
+                                          showTimeoutDialog();
+                                          
+                                        });
+
+                                	  $rootScope.$on('IdleTimeout', function() {
+                                          addEvent({event: 'IdleTimeout', date: new Date()});
+                                          $rootScope.timedout = true;
+                                          console && console.log('session timed out');
+                                          $rootScope.$broadcast('logoutImmediately',{redirect:false});
+                                        });
+                                	   
+
+                                	  $rootScope.$watch('idle', function(value) {
+                                        if (value && value !== null) Idle.setIdle(value);
+                                      });
+
+                                	  $rootScope.$watch('timeout', function(value) {
+                                        if (value && value !== null) Idle.setTimeout(value);
+                                        
+                                      });                                	  
+
+                                	  
+                                	  $rootScope.$on('userLoggedIn',function(event, data){
+                      					$rootScope._sessionTimeout = data.sessionTimeout;
+  	                            	    $rootScope.timeout = 120 ;
+  	                            	    $rootScope.idle =   parseInt($rootScope._sessionTimeout - 120);
+                                  	    Idle.watch();
+                                  	    
+                                  	    console && console.log('session timer started. [sessionTimeout]=' + $rootScope._sessionTimeout);
+
+                                	  });
+                                	  
+
+	                              }; 
+	 
+	                              
+	                              
+                                  return {
+                                	  start : start 
+                                  };
+                              }
+                          ]);
+
+oinpApp.controller("MainCtrl", MainCtrl);
+MainCtrl.$inject = [ '$scope', '$rootScope','$uibModal', '$http', 'Keepalive', 'Idle', '$window' ,'$translate', '$translatePartialLoader'  , '$location', 'sessionService', '$anchorScroll'];
+function MainCtrl($scope, $rootScope,$uibModal, $http, Keepalive , Idle ,$window,  $translate, $translatePartialLoader ,$location, sessionService, $anchorScroll){
+
+
+                    	  var session = sessionService.getSession();
+                    	  
+                    	  $scope.scrollTo = function(id) {
+                    		    $location.hash(id);
+                    		    console.log($location.hash());
+                    		    $anchorScroll();
+                    	  };
+                    		  
+                          $scope.nopadding = false;
+                          /*function(){
+                        	  return ($location.path() == '/signin' && session.user.type == 'existing' && session.lang =='fr');
+                          };*/
+
+	                      $scope.gotoMyProfile = function(){
+	                    	  $location.path( '/profile' );
+	                      }
+	                      
+	                      $scope.login = function(){
+	                    	  session.user.type = 'existing';
+	                    	  $location.path( '/signin' );
+	                      }
+	                      
+	                      $scope.home = function(){
+	                    	  $location.path( '/' );
+	                      }
+	                      
+	                      $scope.queue = function(){
+	                    	  $location.path( '/queue' );
+	                      }
+	                      
+	                      $scope.changeLanguage = function(lang){
+	                    	  if(lang){
+	                    	    sessionService.setLanguage(lang);
+	                    	  }
+	                    	  else{
+	                    		sessionService.setLanguage($scope.getLanguage() == 'fr' ? 'en' : 'fr');  
+	                    	  }
+	                    	  
+ 	                      }
+	                      
+	                      $scope.getLanguage = function(){
+	                    	  return session.lang;
+	                      }
+	                      
+	                      $scope.$on('onekey:padding', function(event,data) {
+	                    	  $scope.nopadding = true;
+	        	   	      });
+	                      
+	                      $scope.getSession = function(){
+	                    	  return session;
+	                      }
+	                      
+	                      $scope.$on('$routeChangeStart', function(scope, next, current) {
+	                    	  //console.log($scope.getSession());
+	                    	  if(next.$$route){
+		                    	  console.log(next.$$route.originalPath + '--->' + next.$$route.requiretoken);
+		                    	  var session = $scope.getSession();
+		                    	  if(next.$$route.requiretoken){
+			                    	  if(session && session.tokenId && session.tokenId.length && session.lineStatus && session.lineStatus.serving){
+			                    		  
+			                    	  }else if(session.captcha){
+			                    		  $scope.queue();
+			                    	  }else{
+			                    		  $scope.home();
+			                    	  }
+		                    	  }
+	                    	  }
+	                    	  
+	                      });	                      
+
+  }
+
+
+
+oinpApp.factory("oinpSessionFactory", ['$rootScope',
+                                 function($rootScope){
+	                                var session =  { 'sessionId' : pnpSessionId ,
+	                   			         'tokenId'   : pnpTokenId,
+	                   			         'user'   : {
+	                   			        	 type : null,
+	                   			        	 bRep : false
+	                   			         },
+	                   			         'stream' : null,
+	                   			         'lang'   : null,
+	                   			         'jumppath' : null,
+	                   			         'jumped'   : false,
+	                   			         'dupuser'  : false
+	                			       };
+	                                
+	                                
+	                                var storedLang = localStorage.getItem('oinp.user.lang');
+	                          	    var langToUse = (storedLang!=null) ? storedLang : 'en';
+	                          	    session.lang = langToUse;
+	                          	    
+	                                return {
+	                                	getSession : function(){
+	                                		return session;
+	                                	}
+	                                }
+                                 }
+                               ]);
+
+oinpApp.service("sessionService", SessionService);
+
+
+SessionService.$inject = ['$rootScope','$location', '$http','OinpCore','oinpSessionFactory','$translate','$routeParams'];
+function SessionService($rootScope,$location, $http,OinpCore,oinpSessionFactory,$translate,$routeParams){
+	
+	var pnpcontext = $location.path().toLowerCase().indexOf("/pnp_en/") >=0 ? '/pnp_enu/' : '/pnp_fra/';
+	
+		
+	this.signin = function(oinpSession, onSigninFunc){
+		var targetUrl = pnpcontext + 'oinptoken.aspx?sessionId=' + oinpSession.sessionId;
+		targetUrl =  '/OINP2/pnp/signin?sessionId=' + oinpSession.sessionId + '&user=test&httpPID=testpid';
+
+		$http.get( targetUrl , {
+			headers: {'oinpToken': oinpSession.tokenId}
+		}).then(function(response){
+			oinpSession.tokenId = response.data;
+			
+			if(onSigninFunc){
+				onSigninFunc(oinpSession);
+			}
+			console && console.log(oinpSession);
+			
+		},function(response){
+			console && console.log(response);
+		});
+	}
+	
+	this.getSessionToken = function(){
+		return this.session.tokenId;
+	}
+	
+	this.getSession = function(){
+		return oinpSessionFactory.getSession();
+	}
+	
+	this.preSession = function(){
+		
+		var session = this.getSession();
+		var locale =   $routeParams.lang ?  $routeParams.lang : session.lang;
+		if($routeParams.pathcode){
+			  if($routeParams.pathcode == 'reg'){
+				  session.jumppath = '/register'  + ('fr' == locale ? '_fra' : '_enu')  + '/dynamicform/register/start';
+			  }else if($routeParams.pathcode == 'pnp'){
+		        session.jumppath =   '/pnp'  + ('fr' == locale ? '_fra/dynamicform/pnp/welcome?lang=fr' : '_enu/dynamicform/pnp/welcome?lang=en') ;
+			  }
+		  }else{
+			  
+		}
+		  
+		session.lang = locale;
+		
+		$translate.use(locale);
+		  
+		$translate.refresh();
+
+	}
+	
+	this.initToken = function(callback){
+		var session = oinpSessionFactory.getSession();
+		var tokenId = oinpStorage.getItem('oinp.tokenid');
+		if(!tokenId){
+			OinpCore.get('/gate/getgatetoken',function(result){
+				session.lineStatus = result.data;
+				session.tokenId = result.data.tokenId;
+				oinpStorage.setItem('oinp.tokenid', session.tokenId);
+				
+				console && console.log('get new token' + session.tokenId)
+				
+				callback(session);
+			});
+			
+			
+		}else{
+			console && console.log('local token' + tokenId)
+			
+			OinpCore.get('/gate/setgatetoken/' + tokenId,function(result){
+				session.lineStatus = result.data;
+				session.tokenId = result.data.tokenId;
+				//localStorage.setItem('oinp.tokenid', session.tokenId);
+				callback(session);
+			});
+		}
+	}
+	
+	this.setLanguage = function(lang){
+		var session = oinpSessionFactory.getSession();
+        session.lang = lang;
+        localStorage.setItem('oinp.user.lang',lang);
+ 	    $translate.use(lang).then(function(data){
+ 	    	$rootScope.$broadcast('locale:updated',lang); 	    	
+ 	    });
+
+ 	    
+	}
+
+	this.getIframeSrc = function(){
+		var session = oinpSessionFactory.getSession();
+
+		if( !session.user.type || session.user.type == 'existing'){
+			session.iframeSrc = __env.onekeySigninSrc[session.lang];
+		}else if( session.user.type == 'new'){
+			session.iframeSrc = __env.onekeySignupSrc[session.lang];
+		}
+		
+		return session.iframeSrc;
+	}
+	
+	this.notifyNoPadding = function(){
+		 $rootScope.$broadcast('onekey:padding','no-padding');
+	}
+}
+ 
+
+
+oinpApp.service("OinpCore", OinpCore);
+OinpCore.$inject = ['$rootScope', '$http', '$window', 'oinpSessionFactory'];
+
+function OinpCore($rootScope, $http, $window, oinpSessionFactory) {
+	this.serverURL = oinpContextRoot;
+	
+	
+	this.get = function(targetUrl, onSussessFunc, onErrorFunc) {
+
+		var destUrl = this.serverURL + targetUrl;
+
+		$http.get(destUrl, {
+			headers: {'oinpToken': oinpSessionFactory.getSession().tokenId}
+		})
+			.success(function(result, status, headers, config) {
+                console && console.log(result);
+                
+				if (result.statusCode == '1') {
+					if (onSussessFunc != null) {
+						onSussessFunc(result);
+					} else {
+                        console && console.log('success - '  + result);
+					}
+				} else {
+
+					if (onErrorFunc != null) {
+						onErrorFunc(result, status);
+					} else {
+						console && console.log('error - '  + result);
+					}
+				}
+			})
+			.error(function(result, status, headers, config) {
+
+				if (status == '-1') {
+
+				}
+				if (status == '401') {
+				} else if (status == '403') {
+				}
+				if (onErrorFunc != null) {
+					onErrorFunc(result, status);
+				} 
+			});	
+	}
+	
+	this.post = function(targetUrl, param, onSussessFunc, onErrorFunc) {
+		$('html, body').css("cursor", "wait");
+		
+		var destUrl = this.serverURL + targetUrl;
+
+		var authConfig = {
+				headers: {'oinpToken': oinpSessionFactory.getSession().tokenId}
+        }
+		$http.post(this.serverURL + targetUrl, param, authConfig)
+			.success(function(result, status, headers, config) {
+				$('html, body').css("cursor", "auto");
+				if (result.statusCode == 1 ) {
+					if (onSussessFunc) {
+						onSussessFunc(result);
+					} else {
+						console && console.log(result);
+					}
+				} else {
+
+					if (onErrorFunc) {
+						onErrorFunc(result, status);
+					} else {
+						console && console.log(result);
+					}
+				}	
+			})
+			.error(function(result, status, headers, config) {
+				$('html, body').css("cursor", "auto");
+				console && console.log('Post error, status code:' + status + ', ' +JSON.stringify(result));
+				//$scope.setErrorMessage( result.status + ',' + result.message);
+				if (status == '-1') {
+
+				}else	if (status == '401') {
+
+				} else {
+
+				} 
+				
+				if (onErrorFunc) {
+					onErrorFunc(result, status);
+				} else {
+				}
+			});		
+	}
+	
+	
+	this.switchLanguage = function() {
+		this.setLanguageInUse(this.getLanguageAvailable());
+	}
+
+	
+}
+
+oinpApp.controller('registerControl', registerControl);
+registerControl.$inject = ['$rootScope','$scope','OinpCore','$location','$interval','oinpSessionFactory','$filter'];
+
+function registerControl($rootScope,$scope,OinpCore,$location,$interval,oinpSessionFactory,$filter){
+	
+	$scope.user = oinpSessionFactory.getSession().user;
+	$scope.lockRegBtn = false;
+	$scope.stream = oinpSessionFactory.getSession().stream;
+	
+	$scope.regform = {
+			'repYn'  : ($scope.user.bRep ? "y" : "n")
+	};
+	
+	 $scope.format = "dd/MM/yyyy";
+	  $scope.dateOptions = {
+			    dateDisabled: false,
+			    formatYear: 'yyyy',
+			    maxDate: new Date(),
+			    minDate: new Date(1920, 1, 1),
+			    startingDay: 1
+			  };	
+	  $scope.popup1 = {
+			    opened: false
+			  };
+	  $scope.open1 = function() {
+		    $scope.popup1.opened = true;
+		  };
+      
+		  $scope.altInputFormats = ['M!/d!/yyyy'];
+		  
+		  
+	$scope.submit = function(){
+		$scope.lockRegBtn = true;
+		
+		var session = oinpSessionFactory.getSession();
+		
+		$scope.regform.stream = session.stream;
+		$scope.regform.birthDate = $filter('date')($scope.regform.birthDateDT, "dd/MM/yyyy");
+		OinpCore.post('/gate/checkuser', {
+			         'birthDate' :  $scope.regform.birthDate,
+			         'firstName' :  $scope.regform.firstName,
+			         'lastName'  :  $scope.regform.lastName,
+			         'repYn'     :  $scope.regform.repYn,
+			         'stream'    :  session.stream,
+			       //  'passport'  : $scope.regform.passport,
+			         'email'     :  $scope.regform.email
+		         },
+				 function(result){
+		        	    $scope.lockRegBtn = false;
+					    if(result.data == '0'){
+							session.user.type = 'existing';
+							session.dupuser = true;
+						}else{
+							session.user.type = 'new';
+							session.dupuser = false; 
+						}
+		
+						$location.path('/signin');			         
+		         },function(result){
+		        	   $scope.lockRegBtn = false;
+		         });
+	}
+}
+;
+
+
+
+oinpApp.controller('captchaCtrl', CaptchaCtrl);
+CaptchaCtrl.$inject = ['$rootScope','$uibModal','$http','$scope','OinpCore','$location','$interval','oinpSessionFactory', 'sessionService','$translatePartialLoader','$translate','$routeParams','vcRecaptchaService'];
+
+function CaptchaCtrl($rootScope,$uibModal,$http,$scope,OinpCore,$location,$interval,oinpSessionFactory,sessionService,$translatePartialLoader,$translate,$routeParams,vcRecaptchaService){
+   $scope.publicKey = __env.captChapKey;
+   
+   var sessionModalInstance;
+
+   $rootScope.disconnected = false;
+   
+   $scope.response = 'www';
+   $scope.lockSubmit = false;
+   $scope.validateCaptchaError = false;
+   $scope.notice = {
+		   title : null,
+		   content : null
+   }
+   
+   $scope.setResponse = function (response) {
+       $scope.response = response;
+   };
+
+   $scope.setWidgetId = function (widgetId) {
+       $scope.widgetId = widgetId;
+   };
+   
+   $scope.loadNotice = function(){
+	  $translatePartialLoader.addPart('notice');
+	  $translate.refresh();
+	 
+	  $translate('notice.title').then(function (translation) {
+		  $scope.notice.title = translation;
+		  if( $scope.notice.title == 'notice.title'){
+			 // $scope.notice.title = null;
+		  }
+	  });
+	  
+	  $scope.notice.title = $translate.instant('notice.title');
+	  
+
+   }
+   
+   $scope.showNotice = function(){
+	   $scope.notice.title = $translate.instant('notice.title');
+	   return $scope.notice.title != 'notice.title'; 
+   }
+   
+  $scope.changeRecaptchaLanguage =  function (language) {
+	 /* if(true || $scope.widgetId) {	   
+		   var script = document.createElement('script');
+		   script.src = 'https://www.google.com/recaptcha/api.js?hl=' + language;
+		   script.async = true;
+		   script.defer = true;
+		   document.querySelector('head').appendChild(script);
+	   
+		   vcRecaptchaService.reload($scope.widgetId);
+	   }*/
+	  
+	  vcRecaptchaService.useLang($scope.widgetId,language);
+	  
+	 }
+  
+   $rootScope.disconnectLogout = function(){
+	    OinpCore.get('/logoutSuccess?gate=y', function(result){
+			   $rootScope.disconnected = true;
+			   $rootScope.logoutOnekey();
+		   },function(result){
+			   $rootScope.disconnected = true;
+			   $rootScope.logoutOnekey();
+
+      }) ;
+   }
+   
+   $rootScope.logoutOnekey = function(){
+	   location.href = __env.onkeyLogoutUrl;
+   }
+   
+	   
+   $scope.showSessionModal = function(){
+
+ 	  if($rootScope.sesionModalOpen) return;
+ 	  
+ 	  var modalInstance = $uibModal.open({
+			templateUrl : '../global/sessionAlert.html',
+			//controller: 'ModalInstanceCtrl',
+			backdrop : 'static',
+			resolve: {
+  	             isDisconnected : function(){
+ 	            	return $rootScope.disconnected;
+ 	            }
+			}
+		}); 
+ 	  
+ 	modalInstance.opened.then(function () {
+ 		$rootScope.sesionModalOpen = true;
+ 		sessionModalInstance = modalInstance;
+ 	});
+ 	  
+		modalInstance.result.then(function ( ) {
+ 		}, function () {
+			$rootScope.sesionModalOpen = false;
+		});
+   }
+  
+  
+ 
+   $scope.submit = function () {
+	    $scope.lockSubmit = true;
+	    $scope.validateCaptchaError = true;
+		var tokenId = oinpStorage.getItem('oinp.tokenid');
+		var session = oinpSessionFactory.getSession();
+
+
+		OinpCore.post('/gate/validateCaptcha', {
+	         'gRecaptchaResponse' :  $scope.response,
+	         'tokenId'   :  tokenId
+         },
+		 function(result){
+        	 
+        	    $scope.lockSubmit = false;
+        	   $scope.validateCaptchaError = false;
+                session.lineStatus = result.data; 	
+                session.tokenId = result.data.tokenId;
+                oinpStorage.setItem('oinp.tokenid', session.tokenId);
+                session.captcha = true;
+				$location.path('/queue');
+        	 
+        },function(result){
+        	if(result.statusCode == -1000){
+       	    	 $scope.showSessionModal();
+       		 
+       	     }else{
+        	      $scope.lockSubmit = false;
+        	     $scope.validateCaptchaError = true;
+	              vcRecaptchaService.reload($scope.widgetId);
+       	     }
+	           
+        }
+         
+		);
+       
+       
+     
+   }
+   
+   if(!oinpSessionFactory.getSession().jumped){
+     sessionService.preSession();
+     
+   }
+   
+   $scope.loadNotice();
+   
+   $scope.$on('locale:updated', function(event,data) {
+	   
+	   $scope.changeRecaptchaLanguage(data);
+		 
+	});
+}
+
+
+oinpApp.controller('QueueCtrl', QueueCtrl);
+QueueCtrl.$inject = ['$rootScope','$scope','OinpCore','$location','$interval','oinpSessionFactory', 'sessionService','$translatePartialLoader','$translate','$routeParams','idleService','Idle','$http'];
+
+function QueueCtrl($rootScope,$scope,OinpCore,$location,$interval,oinpSessionFactory,sessionService,$translatePartialLoader,$translate,$routeParams,idleService,Idle,$http){
+	  var stoptime ;
+	  var session = sessionService.getSession();
+
+	$scope.interval = 60;
+	$scope.serving = false;
+    $scope.checkOneKey = function(withOneKeyFunc, withoutOneKeyFunc ){
+		
+         $http.get('/pnp_enu/oinp.aspx', {
+			
+		})
+			.success(function(result, status, headers, config) {
+                //console && console.log(result);
+                withOneKeyFunc(result);
+			 
+			})
+			.error(function(result, status, headers, config) {
+                 // console && console.log('err -- ' + result);
+				 withoutOneKeyFunc();
+			});			
+	}
+	
+	
+	$scope.landWithoutOneKey = function(){
+			$scope.goChooseUserType();
+			
+			idleService.start(Idle);
+			
+			
+       	    $rootScope.$broadcast('userLoggedIn',{sessionTimeout: 900});
+	}
+	
+	$scope.land = function(){
+		
+		if(session.jumppath ){
+			if( session.jumppath.search(/[pnp_enu|pen_fra|register_]/i)>=0){
+				$scope.checkOneKey(function(result){
+					      window.location = session.jumppath;
+				     },
+				    function(){
+						$scope.landWithoutOneKey ();
+					}
+				)
+			}else{
+			   window.location = session.jumppath;
+			}
+		}else{
+		   $scope.landWithoutOneKey ();
+
+		}
+	}
+	
+	
+	$scope.goChooseUserType = function(){
+		$location.path('/whoareu');
+	}
+	
+	$scope.getPosition = function(){
+		
+		OinpCore.get('/gate/checkReady/' + session.tokenId ,function(result){
+			$scope.onGetLineStatus(result.data);
+		}, function(){
+			$scope.raiseGateError();
+		});
+		
+	}
+	
+	$scope.raiseGateError = function(){
+		if(stoptime) $scope.stopTimer();
+		alert('There was a problem connecting to the server. please refresh the page and try again.');
+		return false;
+	}
+	
+	$scope.onGetLineStatus = function(data){
+		if(data.position < 0) return $scope.raiseGateError();
+		
+		session.lineStatus = data; 
+		$scope.position = data.position ;
+		$scope.serving = data.serving;
+		//$scope.waitingtime = $scope.estimateTime($scope.position );
+		$scope.waitingtime = data.waitingTime /60;
+	    console && console.log("estimated waiting time -  " + $scope.waitingtime);
+	    if(data.pollingInterval == 0 && !data.serving){
+	    	data.pollingInterval = 60;
+	    }
+	    
+	    $scope.startTimer( data.pollingInterval * 1000);
+		//$scope.startTimer( $scope.waitingtime * 60000);
+	}
+	
+	$scope.estimateTime = function(pos){
+		return Math.ceil(pos/5);
+	}
+	
+	$scope.startTimer = function(delay){
+		if(stoptime) $scope.stopTimer();
+		
+		stoptime = $interval(function() {
+			try{
+				$scope.getPosition(); 
+				//$scope.$apply();
+				
+			} catch(err){
+				console.log(err);
+			} 
+		    }, delay, 1);
+	}
+	
+	$scope.stopTimer = function(){
+		$interval.cancel( stoptime );
+	}
+	
+	
+	
+	$scope.$watch('serving',function(value){
+		if(  value ){
+			$scope.stopTimer();
+			$scope.position = $scope.startPos;
+			if(session.lineStatus.serving){
+				//$interval(function(){	$scope.land();}, 2000,1);	
+				
+				$scope.land();
+			}
+
+		}
+	},true);
+	
+	$scope.$on('$destroy', function() {
+	      $scope.stopTimer();
+	  });
+	
+
+	$scope.init = function(){
+		//$scope.position = session.lineStatus.position;
+		//$scope.interval = session.lineStatus.pollingInterval * 1000;
+		//$scope.startPos = session.lineStatus.position + 1;
+		
+		//$scope.startTimer();
+		
+		$scope.onGetLineStatus(session.lineStatus);
+
+	}
+	
+/*	sessionService.initToken(function(session){
+		$scope.position = session.lineStatus.position;
+		$scope.interval = session.lineStatus.pollingInterval * 1000;
+		$scope.startPos = session.lineStatus.position + 1;
+		
+		$scope.startTimer();
+
+		//$scope.position = 10;
+	});
+*/
+	$scope.init();
+}
+
+oinpApp.filter('landingIcon', function () {
+    return function (indicator) {
+        return indicator >= 1 ? '' : '_G2';
+    };
+});
+
+oinpApp.controller('StreamCtrl', StreamCtrl);
+StreamCtrl.$inject = ['$rootScope','$scope','OinpCore','$location','$interval','oinpSessionFactory'];
+
+function StreamCtrl($rootScope,$scope,OinpCore,$location,$interval,oinpSessionFactory){
+	$scope.model = {
+			joi : 0,
+			jofw  : 0,
+			jois  :0,
+			fsfsw :0,
+			hcfsw : 0,
+			ism  :0 ,
+			isp : 0,
+			be  :0,
+			bc  : 0,
+			sts : 0,
+			joid : 0
+	}
+	
+	
+	OinpCore.get('/gate/getstreams', function(result){
+		  $scope.model = result.data; 
+	 });
+	
+	$scope.select = function(stream){
+		var session = oinpSessionFactory.getSession();
+		session.stream = stream;
+		$location.path('/register');
+		
+	}
+	
+	
+}
+
+oinpApp.controller('WhoCtrl', WhoCtrl);
+WhoCtrl.$inject = ['$rootScope','$scope','OinpCore','$location','$interval','oinpSessionFactory'];
+
+function WhoCtrl($rootScope,$scope,OinpCore,$location,$interval,oinpSessionFactory){
+	 var session = oinpSessionFactory.getSession();
+	 $scope.user =	 session.user;
+
+	 $scope.model = {
+			 iframeSrc  : session.iframeSrc,
+			 inited : false,
+			 user    :   session.user, 
+			 session :   session
+	 }
+	
+	 /*
+	$scope.initToken = function(){
+		OinpCore.get('public/checkInQueue', function(result){
+			 console.log(result);
+			 $rootScope.session.tokenId = result;
+		 });
+	}*/
+
+	$scope.goSignin = function(){
+		 $scope.user = oinpSessionFactory.getSession().user;
+		
+		if( this.user.type == 'existing'){
+			$location.path('/signin');
+		}else{
+			//$location.path('/stream');
+			$location.path('/register');
+		}
+//		}else if( this.user.type == 'new'){
+//			$rootScope.session.iframeSrc = onekeySignupSrc;
+//		}
+		
+		//this.initToken();
+		
+		
+	}
+	 
+	$scope.goExisting = function(){
+			$scope.user.type = 'existing';
+			$scope.user.bRep = false;
+			$location.path('/signin');
+		}
+	 
+	$scope.goApplicant = function(){
+		$scope.user.type = 'new';
+		$scope.user.bRep = false;
+		$location.path('/stream');
+	}
+	
+	$scope.goRep = function(){
+		$scope.user.type = 'new';
+		$scope.user.bRep = true;
+		$location.path('/register');
+
+	}
+	
+}
+
+oinpApp.controller('OnekeyCtrl', OnekeyCtrl);
+
+OnekeyCtrl.$inject = ['$rootScope','$scope','OinpCore','$location','$interval','oinpSessionFactory'];
+
+function OnekeyCtrl($rootScope,$scope,OinpCore,$location,$interval,oinpSessionFactory){
+
+	 $scope.model = {
+//			 iframeSrc  : null,
+//			 inited : false,
+//			 user    :   oinpSessionFactory.getSession().user, 
+//			 session :   oinpSessionFactory.getSession()
+	 }
+	 
+	 $scope.setupUserContext = function(){
+		  var session = oinpSessionFactory.getSession();
+
+			if( !session.user.type || session.user.type == 'existing'){
+				session.iframeSrc = __env.onekeySigninSrc[session.lang];
+			}else if( session.user.type == 'new'){
+				//session.iframeSrc = __env.onekeySignupSrc[session.lang];
+				session.iframeSrc = __env.onekeySigninSrc[session.lang];
+			}
+
+			 $scope.model = {
+					 iframeSrc  : session.iframeSrc,
+					 inited : false,
+					 user    :   session.user, 
+					 session :   session
+			 }
+			
+			/*demo
+			OinpCore.get('public/checkInQueue' + '?rep=' + (session.user.bRep ? 'y' :'')
+				   + '&backuser=' + ( session.user.type == 'existing' ? 'y' : '' ) 
+				   +'&stream=' + ( session.stream ? session.stream  : '' )  
+					, function(result) {
+				
+				 session.tokenId = result.data;
+				 console.log('got oinp tokenid : ' +  session.tokenId);
+			 });
+			
+			console && console.log('setup user context');
+			*/
+	 };
+	 
+	 
+	 $scope.setupExistUserContext = function(){
+		 var session = oinpSessionFactory.getSession();
+
+		 session.iframeSrc = __env.onekeySigninSrc[session.lang];
+		 session.user.type = 'existing';
+		 
+		 $scope.model = {
+				 iframeSrc  : session.iframeSrc,
+				 inited : false,
+				 user    :   session.user, 
+				 session :   session
+		 }
+	 }
+	 
+	// $scope.setupUserContext();
+	 
+	 
+}
+
+
+
+
+oinpApp.controller('iframeControl',['$rootScope','$scope','$location',function($rootScope,$scope,$location){
+	$scope.model = { inited : false ,
+			        
+	};
+
+}]);
+
+
+
+
+oinpApp.directive('iframeSetDimensionsOnload', ['$location','$interval','oinpSessionFactory','sessionService', function($location,$interval,oinpSessionFactory,sessionService){
+	return {
+	    restrict: 'A',
+	    controller: 'OnekeyCtrl',
+	//    controllerAs: 'ctrl',
+	    scope: {
+	    	iframeSetDimensionsOnload: '='
+	      },
+	    link: function(scope, element, attrs, ctrl){
+	    	angular.element(element).attr('src', scope.iframeSetDimensionsOnload.iframeSrc);
+	    	
+	    	var stop = false;
+	    	var session = oinpSessionFactory.getSession();
+	    	
+	       	scope.$on('locale:updated', function(event,data) {
+	     		  //console && console.log( data )
+	     		 angular.element(element).attr('src',  sessionService.getIframeSrc());
+	     		 
+	   	    });
+	       	 
+	       	if( session.user.type == 'existing' && session.lang =='fr'){
+	       		sessionService.notifyNoPadding();
+	       	}
+	    	
+	    	function resize (){
+	    		
+	    		/*if(element[0].contentWindow.location.href.indexOf("/dynamicform/") >=0 ){
+	    			window.location = element[0].contentWindow.location.href;
+	    			stop = true;
+	    			return;
+	    		}*/
+	    		
+	    		if(element[0].contentWindow.location.href.indexOf("/dynamicform/") >=0 ){
+	    			window.location = element[0].contentWindow.location.href + '?oinpToken=' + session.tokenId + '&lang=' + session.lang; //scope.iframeSetDimensionsOnload.session.tokenId;
+	    			stop = true;
+	    			return;
+	    		}else if(element[0].contentWindow.location.href.indexOf("/pnp_redirect.aspx") >=0 ){
+	    			if(session.lang == 'en'){
+	    				window.location = '/pnp_enu/dynamicform/pnp/welcome?lang=en';
+	    			}else{
+	    			   window.location =   '/pnp_fra/dynamicform/pnp/welcome?lang=fr';
+	    			}
+	    			stop = true;
+	    			return;
+	    		}else if(element[0].contentWindow.location.href.indexOf("/pnp_index/") >=0 ){
+	    			window.location = element[0].contentWindow.location.href ;
+	    			stop = true;
+	    			return;
+                }
+	    		
+	    		
+	    		if(element[0].contentWindow.document.domain == 'gov.on.ca'){
+	    			if(scope.iframeSetDimensionsOnload.user.type == 'existing'){
+	    				/*
+	    				angular.element(element[0].contentWindow.document.body).find('#MaintMsg').hide();
+	    				angular.element(element[0].contentWindow.document.body).find('#loginContent').hide();
+	    			
+	    				
+	    				var loginBox = angular.element(element[0].contentWindow.document.body).find('#loginBox');
+	    				loginBox.css('margin','0px');
+	    				loginBox.css('background-color','white');
+	    				angular.element(element[0].contentWindow.document.body).find('#top').hide();
+	    				angular.element(element[0].contentWindow.document.body).find('#bottom').hide();
+	    				*/ 
+	    			}
+	    			
+	    		  var iFrameHeight = element[0].contentWindow.document.body.scrollHeight + 'px';
+	               var iFrameWidth = '100%';
+	               element.css('width', iFrameWidth);
+	               element.css('height', iFrameHeight);
+	               element.css('overflow','hidden');
+	               //var div = angular.element(element[0].contentWindow.document.body).find('#wrapper');
+	               var div = angular.element(element[0].contentWindow.document.getElementById('wrapper'));
+	               div.css('width','100%');
+	               div.css('margin','0px');
+	               div.css('overflow','hidden');
+	               
+	               /*
+	               angular.element(element[0].contentWindow.document.body).find('#submitForm').off("click");
+	               angular.element(element[0].contentWindow.document.body).find('#submitForm').click(function(event){
+	            	   //if(session.user.bRep){
+	            	        event.preventDefault();
+	            	        window.location =  'http://ond2c00760549.cihs.ad.gov.on.ca/register_enu/dynamicform/register/start?oinpToken=' + session.tokenId;
+	            	        stop = true;
+	            	        return false;
+	            	   //}else{
+	            		   
+	            	   //}
+	               });
+	               */
+	               if(div.length)    scope.iframeSetDimensionsOnload.inited = true;
+	               
+	              /* if(session.lang == 'fr'){
+	            	   var div_content = element[0].querySelector('#div_content');
+	            	   if(div_content){
+	            		   div_content.css('padding-left','0');
+	            		   div_content.css('padding-right','0');
+	            	   }
+	               } */
+	               
+	               //stop = true;
+	    		}/*else if(angular.element(element[0].contentWindow.document.body).find('#xthrobber').length ){
+	    			
+	    		}*/
+	    	}
+	    	
+	        element.on('load', function(){
+	        	  
+	            if($location.absUrl().indexOf('localhost') == -1){
+	                
+	            	$interval(function() {
+	            		try{
+	            			if(!stop) 	resize();
+	            		} catch(err){
+	            			//console && console.log(err)
+	            		} 
+	            	    }, 100);
+	            }
+	        })
+	    }
+	}}])
+	
+	
+
+oinpApp.controller('JumpCtrl', JumpCtrl);
+JumpCtrl.$inject = ['$rootScope','$scope','OinpCore','$location','$interval','oinpSessionFactory', 'sessionService','$translatePartialLoader','$translate','$routeParams','vcRecaptchaService'];
+
+function JumpCtrl($rootScope,$scope,OinpCore,$location,$interval,oinpSessionFactory,sessionService,$translatePartialLoader,$translate,$routeParams,vcRecaptchaService){
+	
+	sessionService.preSession();
+	oinpSessionFactory.getSession().jumped = true;
+	$location.path('/');
+}
+
+oinpApp.run(function($rootScope, $window, $http, $location, sessionService, oinpSessionFactory, OinpCore ,idleService,jcsValidationMessageResolver,validator){
+	$rootScope.title = 'Queue';
+	
+	var session = oinpSessionFactory.getSession();
+
+	
+	$window.ga('create', __env.GAid, 'auto');
+	 
+	$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+		if(current.$$route){
+		 $rootScope.title = current.$$route.title;
+		 console && console.log('ga -  ' + $location.path() + "," + $rootScope.title );
+         $window.ga('send', 'pageview', '/pnpindex' +  $location.path(), { 'title' : 'Gate - ' + $rootScope.title + (session.user.bRep ? '[REP]' :'')});
+         
+		}
+    });
+	
+	
+	
+	
+//	$http.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
+//	$http.defaults.headers.common['Accept'] = 'application/json; charset=utf-8';
+	//$http.defaults.headers.common['oinpToken'] = $rootScope.retrieveUserToken();
+//	$http.defaults.headers.common['Accept-Language'] = 'en';	
+	
+	validator.setErrorMessageResolver(jcsValidationMessageResolver.resolve);
+
+	
+//	idleService.start(Idle);
+	 
+});
+
+
+oinpApp.directive('oinpTooltip',function($translate,$sce){
+	return {
+        restrict: 'A',
+        template: '<button type="button" class="btn btn-info btn-xs" style="margin-left:10px" ><span class="glyphicon glyphicon-info-sign"></span> {{label | translate}}</button>',
+        link: function (scope, el, attrs) {
+            scope.label = attrs.popoverLabel;
+            
+            scope.text = $translate.instant(attrs.popoverKey) ;// $sce.parseAsHtml($translate.instant(attrs.popoverKey));
+          //  console.log(text)
+            $(el).popover({
+                trigger: 'click',
+                html: true,
+                content: function() { return scope.text; },
+                placement: attrs.popoverPlacement
+            });
+            
+            scope.$on('locale:updated', function(e){
+            	scope.text =	$translate.instant(attrs.popoverKey);
+            	$(el).popover({
+                    trigger: 'click',
+                    html: true,
+                    content: function() { return scope.text; },
+                    placement: attrs.popoverPlacement
+                });
+            }); 
+        }
+    };
+});

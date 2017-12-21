@@ -1,0 +1,224 @@
+/* $Id: mobile.css 47 2009-07-03 21:32:04Z DragKng $ */
+@charset "utf-8";
+body {
+	background-color: #FFF;
+	color: #000;
+	font-size: 62.4%;
+	font-family: Verdana,Helvetica,Arial,sans-serif;
+	text-align: left
+}
+h1,h2,h3 {
+	margin: 0 0 0 5px
+}
+#wrapper {
+	font-size: 1.2em;
+	margin: 0 2px 0 2px
+}
+#textlinks a.last,#navbar p a.last {
+	border: none;
+	padding-right: 0
+}
+#textlinks {
+	position: relative;
+	right: 0;
+	top: 5px;
+	text-align: center
+}
+#textlinks a {
+	padding: 0 1em 0 .75em;
+	border-right: 1px solid #999;
+	text-decoration: underline
+}
+#arc {
+	text-align: center;
+	background: #69783d;
+	padding: 2px 0
+}
+#search {
+	border: 1px solid #dadbd5
+}
+#navbar {
+	background: #463519;
+	text-align: center;
+	padding: 2px 0
+}
+#navbar a {
+	color: #FFF;
+	margin: 0 5px;
+	text-decoration: underline
+}
+#banner,#flash {
+	display: none
+}
+#tabs_menu,#tab_menu_services {
+	list-style: none
+}
+#tabs li a {
+	display: block;
+	font-weight: 700;
+	color: #FFF;
+	text-decoration: none;
+	margin-top: 3px;
+	margin-left: 10px;
+	font-size: 1.2em
+}
+#tab_menu {
+	border-top: 4px solid #453617
+}
+#tabs li {
+	background-color: #859C3A
+}
+#tabs li.active {
+	background-color: #463718
+}
+#tabs li:hover {
+	background-color: #463718
+}
+#tabs li.notab,#tabs li.notab_short {
+	background-color: #e2e6d5
+}
+#tabs_services li a {
+	display: block;
+	font-weight: 700;
+	color: #FFF;
+	text-decoration: none;
+	margin-top: 3px;
+	margin-left: 10px;
+	font-size: 1.2em
+}
+#tabs_services li {
+	background-color: #6d9a23
+}
+#tabs_services li.active {
+	background-color: #00713d
+}
+#tabs_services li.login {
+	display: block;
+	background-color: #463517;
+	width: 105px
+}
+#tabs_services li:hover {
+	background-color: #463718
+}
+#tabs_services li.notab,#tabs li.notab_short {
+	background-color: #e2e6d5
+}
+.blankTab,.notab,#right_column img,#left_column img {
+	display: none
+}
+.leftnav .mycolour .header {
+	border-bottom: 1px solid #000;
+	background: #8b1716
+}
+.leftnav .mycolour .header a {
+	color: #fff;
+	font-weight: 700;
+	display: block;
+	padding: 3px 5px
+}
+#dark {
+	background: #66810c
+}
+#dark a {
+	color: #FFF
+}
+.leftnav .header {
+	height: 100%;
+	width: 100%;
+	height: 2em;
+	border-bottom: 1px solid #bfbfbf;
+	float: left;
+	position: relative;
+	background: #e4f0c3;
+	padding: 3px 5px
+}
+.leftnav .header a {
+	color: #333;
+	font-weight: 700;
+	display: block
+}
+.mobilehide {
+	display: none
+}
+.row .header {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	border-top: 3px solid #666;
+	border-bottom: 1px solid #999;
+	background: #c6d89e;
+	margin: 10px 0 10px 0
+}
+.more {
+	position: relative;
+	padding: 2px 0 2px 5px;
+	font-size: .8em;
+	font-weight: 700;
+	text-transform: uppercase
+}
+.more a,.more a:link,.more a:visited,.more a:active {
+	text-decoration: none;
+	font-weight: 700;
+	color: #8b1716;
+	border-bottom: 0
+}
+.clear {
+	clear: both
+}
+.right {
+	float: left;
+	margin-left: 10px;
+	text-align: left
+}
+.left {
+	float: left;
+	margin-right: 10px
+}
+#doubleline {
+	clear: both;
+	height: 4px;
+	float: right;
+	border-top: 1px solid #bfbfbf;
+	border-bottom: 1px solid #bfbfbf;
+	margin-top: 6px
+}
+#footer p {
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #666;
+	font-size: .9em
+}
+#footer a {
+	color: #666
+}
+#full_footer {
+	border-top: 1px solid #7f7f7f;
+	padding-bottom: 1em;
+	width: 100%
+}
+.pageFind {
+	float: left;
+	position: relative;
+	font-weight: 700;
+	color: #5a5a5a;
+	font-size: 1.1em;
+	margin: 6px 0 0
+}
+#pageGo {
+	margin: 0;
+	float: left;
+	position: relative;
+	padding: 0 0 0 6px
+}
+#pagenumber {
+	border: 1px solid #dadbd5;
+	height: 15px
+}
+.pageFindText {
+	float: left;
+	position: relative;
+	margin: 1px 0 0
+}
+#header img {
+	display: none
+}

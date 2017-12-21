@@ -1,0 +1,110 @@
+
+
+
+/**
+ *	iACCESS Captcha JS Lib	
+ */
+ 
+
+	
+var SealCaptcha = function() {
+};
+
+SealCaptcha.prototype = {
+
+	prefix: 'seal_',
+	
+	hostPath: 'http://www.iaccess.gov.on.ca:80/CaptchaWeb/',
+
+	openHelp: function () {
+		var hostPath = this.hostPath;
+		window.open(hostPath + 'help.html', 'Help', 'resizable=0, toolbar=0, scrollbars=0, menubar=0, status=0, location=0, width=460, height=460');
+	},
+	
+    listen: function () {
+    	var prefix = this.prefix;
+    	var hostPath = this.hostPath;
+		document.getElementById(prefix + "recaptcha_captcha_type").value = "s";
+		document.getElementById(prefix + "img_container").src = hostPath + "images/play_sound.png";
+		document.getElementById(prefix + "img_container").width = "100";
+		document.getElementById(prefix + "img_container").height = "50";
+		
+	    var wav = hostPath + 'jcaptcha.wav?recaptcha_challenge_field=tUJphqxZ0pXnAFfHjebPImU&t=' + new Date().getTime();	   
+	    var ie = '<embed id="' + prefix + 'ie" src="' + wav + '"></embed>';
+	   
+	    if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) { 
+	        //test for MSIE x.x
+	        var newSong = document.getElementById(prefix + "audio_container");
+	        newSong.innerHTML = ie;
+	    } else {
+	        var audio = document.getElementById(prefix + "audio");  
+	        audio.pause();
+	        audio.src = wav;
+	        audio.play();
+	    }
+	    
+	    this.resetAll();
+	},
+	
+	loadImg: function () {
+		var prefix = this.prefix;
+		var hostPath = this.hostPath;
+		document.getElementById(prefix + "recaptcha_captcha_type").value = "i";
+		document.getElementById(prefix + "img_container").src = hostPath + 'jcaptcha.jpg?recaptcha_challenge_field=tUJphqxZ0pXnAFfHjebPImU&t=' + new Date().getTime();		
+	},
+	
+	refreshImg: function () {
+		this.loadImg();
+		this.resetAll();
+	},
+		
+	resetAll: function () {		
+		var prefix = this.prefix;	 		
+		document.getElementById(prefix + 'recaptcha_response_field').value="";
+		document.getElementById(prefix + 'recaptcha_response_field').focus();
+	},
+	
+	init: function (containerId, locale) {
+		var refresh_alt = "Get a new challenge";
+		var listen_alt = "Get an audio challenge";
+		var help_alt = "Help";
+
+		if ("fr" == locale) {
+			refresh_alt = "Obtenez un nouveau d¨¦fi";
+			listen_alt = "Obtenez un d¨¦fi audio";
+			help_alt = "aider";
+		};
+
+		var prefix = this.prefix;
+		var hostPath = this.hostPath;
+		var container = document.getElementById(containerId);
+		
+		content='<table id="' + prefix + 'captcha_table">'
+			+ '<tr><td>'
+			+ '<img id="' + prefix + 'img_container" src="' + hostPath + 'jcaptcha.jpg?recaptcha_challenge_field=tUJphqxZ0pXnAFfHjebPImU" width="100px" height="50px" border="1"/>'
+			+ '</td><td>'
+			+ '<a href="javascript:void(0);" title="' + refresh_alt + '" onclick="javascript:sealCaptcha.refreshImg();"><img width="25" height="18" border="0" alt="' + refresh_alt + '" src="' + hostPath + 'images/refresh.png"></a>'
+			+ '<div style="display:none;" id="' + prefix + 'audio_container">'
+			+ '	<audio id="' + prefix + 'audio" preload="auto" tabindex="0" controls><source id="' + prefix + 'wav" type="audio/wav" src=""/></audio>'
+			+ '</div><br/>'
+			+ '<a href="javascript:void(0);" title="' + listen_alt + '" onclick="javascript:sealCaptcha.listen();"><img width="25" height="15" border="0" alt="' + listen_alt + '" src="' + hostPath + 'images/audio.png"></a>'
+			+ '</br>'
+			+ '<a href="javascript:void(0);" title="' + help_alt + '" onclick="javascript:sealCaptcha.openHelp();"><img width="25" height="16" border="0" src="' + hostPath + 'images/help.png" alt="' + help_alt + '"></a>'
+			+ '</td></tr><tr><td colspan="2">'
+			+ '<input id="' + prefix + 'recaptcha_response_field" type="text" name="recaptcha_response_field" value="" />'
+			+ '<input id="' + prefix + 'recaptcha_challenge_field" type="hidden" name="recaptcha_challenge_field" value="tUJphqxZ0pXnAFfHjebPImU" />'
+			+ '<input id="' + prefix + 'recaptcha_captcha_type" type="hidden" name="recaptcha_captcha_type" value="i" />'
+			+ '</td></tr></table>'	
+			;
+	
+	 	//console.log(content);
+	 	
+		container.innerHTML = content;
+	}
+
+};
+
+if(!sealCaptcha) {
+	var sealCaptcha = new SealCaptcha();
+}
+

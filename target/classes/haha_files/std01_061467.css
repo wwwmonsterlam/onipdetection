@@ -1,0 +1,1844 @@
+@charset "utf-8";
+
+/*
+TABLE OF CONTENTS
+
+ZERO OUT - Sets most everything to ZERO, so there's a clean slate to start with - set any defaults here (Lists especially)
+BODY - sets the base font
+POSITIONING - generic tags for positioning
+LINKS - default and other link styling
+#HEADER - Ontario logo, #arc, #search, #navbar (main menu/navigation), #banner
+#right_column - Main content area (Many layouts - see style guide)
+#left_column - .left_nav (left hand navigation group), .menu (menu list)  
+#FOOTER - #full_footer, Copyright, Site Map, Contact Us, Privacy Notices
+*/
+
+
+/* -ZERO OUT EVERYTHING - * ---------------------------------------------------------------- */
+/* -this css sets all padding, margins, defaults to 0 - * ---------------------------------- */
+/* tables still need 'cellspacing="0"' in the markup */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+html {
+	height: 100%;
+}
+body {
+	line-height: 1; height: 100%;
+}
+blockquote, q {
+	quotes: none;
+}
+
+/* this is the behaviour for form fields when they are selected */
+input:focus {
+	outline: 1px solid #000}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none
+}
+del {
+	text-decoration: line-through
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+/* -ZERO OUT EVERYTHING - END * ---------------------------------------------------------------- */
+
+/* ----------- ZERO OUT LISTS - set your default list styles here ---------------- */
+
+/*
+ol, ul {  
+	margin-left: 20px;
+	margin-bottom: 20px
+}
+*/
+
+ul {
+    list-style: none;
+}
+
+/* BASELINE ** ADDITION ** REMOVES Margins from LISTS - nested lists have no top/bottom margins - remove to use default margins*/ 
+/*ul ul, ul ol, ul dir, ul menu, ul dl, ol ul, ol ol, ol dir, ol menu, ol dl, dir ul, dir ol, dir dir, dir menu, dir dl, menu ul, menu ol, menu dir, menu menu, menu dl, dl ul, dl ol, dl dir, dl menu, dl dl {
+	margin-top: 0;
+	margin-bottom: 0;
+}*/
+/* --------------------------------------------------------------- */ 
+
+
+
+/* sets the base font to approx 10pt */
+body { 
+	background-color: none; 
+	color: #000; 
+	font-size: 62.5%;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	text-align: center 
+}
+ 
+
+/* default sizing for standard elements -------------------------- */   /* SET text attributes here */
+
+p {
+	margin: 1em 0 1.5em /* sets default margins for all paragraphs */
+}
+
+/* -------- HEADERS --------- */
+
+h1, h2, h3, h4 { font-weight: bold; line-height: 1.2em} 	/* must set explicitly, it is zeroed out above */
+
+h1 {
+	color: #000; 
+	font-size: 1.4em;
+	margin: 0.5em 0 1em 0  
+}
+
+h2 {
+	color: #000;
+	font-size: 1.2em;
+	padding-bottom: 6px 
+}
+h3 {
+	color: #000; /* COLOUR CHANGE */
+	font-size: 1.1em;
+	margin: 0.5em 0 /* default margins for h tags: in this order: top/bottom, right/left */
+}
+h4 {
+	color: #000; 
+	margin: 0.5em 0 0.7em 0
+}
+
+img {
+	border: 0
+}
+/* --------------------------------------------------------------- */ 
+
+
+
+/* common/generic styles ------------------------------------------------- */ 
+
+/* positioning */
+.right { /* aligns - floats right */
+	float: right;
+	margin-left: 20px;
+	text-align: right;
+	margin-right: 0 
+}
+.left { /* aligns - floats left */
+	float: left;
+	margin-right: 20px;
+	margin-left:0
+}
+.top { /* removes top margin */
+	margin-top: 0
+}
+.bottom { /* removes bottom margin */
+	margin-bottom: 0
+}
+
+.center { /* centers */
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto
+}
+.clear { /* to clear floats */
+	clear: both
+}
+
+/* other */
+.small { /* smaller text */
+	font-size: .85em;
+	line-height: 140%
+}
+.large { /* larger text */
+	font-size: 1.4em;
+	margin-top: 20px;
+	display: block
+}
+.indent { /* use to indent text in a pragraph */
+	margin-left: 2em
+}
+
+.pad_bottom {
+        padding-bottom : 20px;
+}
+
+.label {
+	display: block;
+	width: 5em;
+	float: left
+}
+
+/* SEARCH BAR - submit (go) button default */
+
+.submit { /* styles the submit / GO button -- */
+	background-color: #aa3d12; /* COLOUR CHANGE */
+	color: #fff;
+	font-weight: bold;
+	border: none;
+	float: left;
+	width: 100%;
+	border: 1px solid #000 /* when BGimages are turned off there is no search box visible - adding a border will make it visible - coloud also add a bgcolor instead */
+}
+
+hr { height: 1px; color: #bfbfbf; background-color: #bfbfbf; border: none; float: left; clear: both; width: 96%; margin: 1em 0}
+hr.thick { height: 3px; color: #666; background-color: #666} /* thicker separator line - change colour if desired for greater emphasis */
+/* --------------------------------------------------------------- */ 
+
+
+
+/* tables still need 'cellspacing="0"' in the markup - CSS2 does not yet have proper table support */
+
+
+/* ---- LINKS ---------------------------------------------------- */
+
+/* default link style */
+
+a {
+	text-decoration: none;
+	color: #0e6789;
+	background-color: transparent;
+	font-weight : bold;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/* default link style */
+
+/* --- SITE HOLDER(wrapper) ---- */
+
+#wrapper {
+	background-color: none;
+	margin-left:auto;
+	margin-right:auto;
+	text-align: left;
+	width:1000px;
+	margin-top: 10px
+}
+
+/* BREADCRUMB STYLES ---------- */
+
+#breadcrumb {
+	background-color: none;
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size : 1.1em;
+    font-weight : bold;
+    border-bottom : 12px solid #FFF;
+    color : #333;
+    width : 980px;
+    line-height : 1.4;
+}
+
+/* LEFT NAV STYLES --------------------------------------------- */
+
+#left_column {
+	/*width: 260px;*/
+	width: 250px;
+	display:inline;
+	float:left;
+	/*margin-right:20px;*/
+	margin-right: 30px;
+	margin-left:0;
+	font-size: 1.2em; /* STANDARDIZE */
+	line-height: 130% /* STANDARDIZE */
+}
+
+#left_column ul { margin: 0; padding: 0}
+
+.leftnav {
+	width: 100%;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+/* -- First colour of Header bar for Menu titles -- */
+
+.leftnav .header {
+	width: 100%;
+	height: 100%;
+	border-bottom: 1px solid #000; /* ncs may 29/09 - added top border call */
+	border-top: 1px solid #000;
+	float: left;
+	position: relative;
+	background: #4a1910 url('../images/std01_061470.gif') no-repeat; /* COLOUR CHANGE header BG image match #colour to bottom half of arc graphic */
+	display: block;
+	font-size: 100%; /* ncs jun2/09 added font-sizing - for backwards compatibility */
+	font-size: 1.1em /* ncs jun2/09 added font-sizing - for backwards compatibility */
+}
+.leftnav .header a { 
+	color: #333;
+	font-weight: bold;
+	display: block;
+	/*padding: 4px 5px 6px*/ /* ncs jun2/09 moved all padding to this selector for backwards compatibility */
+	padding: 4px 18px 6px 5px;
+}
+.leftnav .header img {
+	position: absolute;
+	left: 235px;
+	top: 7px;
+	visibility : hidden;
+}
+/* -- Second colour of Header bar for Menu titles -- */
+.leftnav .mycolour .header {
+	background: #1d2d43 url('../images/std01_061470.gif') top left no-repeat /* COLOUR CHANGE header BG image match #colour to bottom half of arc graphic */
+	/* may 29 - removed bottom border call */
+}
+.leftnav .mycolour .header a { 
+	color:#333; /* COLOUR CHANGE update font to contrast w BG color (above in .leftnav .mycolour .header) */ 
+	font-weight: 700
+} 
+
+/* -- Standard MY GOVERNMENT colour of Header bar for Menu titles -- */
+
+.leftnav .mygovt .header {
+	background-color: #4a1910; /* STANDARD COLOUR - DO NOT EDIT */
+	background-image: url('../images/std01_061472.gif');
+	background-repeat: no-repeat
+}
+
+.leftnav .mygovt .header a { 
+	color: #fff; /* COLOUR CHANGE update font to contrast w BG color (above in .leftnav .mycolour .header) */ 
+	font-weight: 700
+} 
+
+.leftnav h2 { /* ncs jun2/09 removed font-size, moved to to .leftnav .header for backwards compatibility */ padding-bottom: 0}
+
+/* EXPANDING MENU STYLES --------------------------------------------- */
+
+.menu {
+	width: 100%;
+	float: left;
+}
+
+/*
+.menu .menu {
+        display : block;
+}
+*/
+
+.menu li {
+	display: inline	
+}
+
+ul.menu a, ul.menu a:link, ul.menu a:visited, ul.menu a:active {	
+	color: #333; 
+	font-weight: bold;
+	display: block;
+	padding: 6px 8px 7px 24px; /* this creates the size of the menu item box - last value is the distance of the text from the side */
+	border-bottom: 1px dotted #666; 
+	background: #f7f7ef url('../images/std01_061531.gif') no-repeat 12px 9px;	
+}
+
+ul.menu a.activeitem, ul.menu a.activeitem:link, ul.menu a.activeitem:visited, ul.menu a.activeitem:active {
+        font-style : italic;
+        background-color : #ebf1f5;
+}
+
+ul.menu a:hover, ul.menu a.activeitem:hover {
+	color : #333;
+}
+
+/* MENU - Current item colour - USE to DESIGNATE THE CURRENT PAGE - add this id to the appropriate li in the menu */
+
+#current { background-color: #fff}
+
+/* ------------ END LEFT NAV ------------------------ */
+
+
+
+/* ------------ HEADER - ONTARIO LOGO / BANNER FLASH / SEARCH / NAV -------------------- */
+#header { 
+	width: 980px;
+	position: relative}
+
+/* HEADER LAYOUT STYLES --------------------------------------------- */
+
+#arc {
+	width: 100%;
+	height: 92px;
+	float: left;
+	background: #dff0f7 url('../images/std01_061506.gif') no-repeat}
+
+#arc form { /* search form */
+	float: right;
+	margin: 40px 0 0 0;
+	padding-right: 20px}
+	
+#arc form p {
+	margin-bottom : 10px; /* IE */
+}
+	
+
+#searchBox { /* search box */
+	width: 300px;
+	height: 1.5em;
+	padding: 3px;
+	border: 0;
+	background-color: #fff; 
+	border: 1px solid #dff0f7}
+	
+#searchBox:hover {
+	border: 1px solid #fff
+}
+#submit { /* submit (go) button */
+	border: 0;
+	color: #fff
+}
+#submit:hover { /* submit (go) button hover state */
+	border: 1px solid #fff
+}
+/* -- top nav -- */
+
+#textlinks a.last, #navbar p a.last { border: none; padding-right: 0}
+
+#textlinks {
+	position: absolute;
+	right: 0;
+	top: 5px;
+	text-align: right;
+	margin-right: 0 /* added jun2/09 */
+}
+
+#textlinks a {
+	padding: 0 1em 0 .75em;
+	border-right: 1px solid #999
+}
+
+a#skipNav:link, a#skipNav:visited, a#skipNav:hover { color: #FFF; border: none}
+a#skipNav:active, a#skipNav:focus { color: #17397d; border-right: 1px solid #999}
+
+
+#navbar { /* the main nav bar */
+	width: 100%;
+	height: 2.75em;
+	float: left;
+	border-bottom: 12px solid #FFF;
+	background-color: #1d2d43  /* COLOUR CHANGE - replace Background colour with your colour that matches the graphic */
+}
+
+#home #navbar { /* the main nav bar */
+	border-bottom: 8px solid #FFF
+}
+
+#navbar p
+{
+	font-size: 1.1em;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+	padding: 7px 0;
+	margin: 0;
+	overflow: hidden
+}
+
+
+/* -- END topnav --*/
+
+#banner { /* holds flash banner or static banner */
+	width: 980px;
+	height: 185px;
+	overflow: hidden; /* Necessary for IE6 */
+	clear: left;
+	margin-bottom: 10px;
+	border-bottom: 4px solid #453617
+}
+/* END flash banner or static banner */
+
+/* SPLASH STYLES */
+#container, #splash_page #container {
+	width: 720px;
+	text-align: center;
+	margin: 0 auto
+}
+#splash { 
+	margin-top: 50px;
+	float: left;
+	padding-bottom: 80px;
+	font-size: 1.3em;
+	text-align: left;
+	background: url('../images/std01_061506.gif') no-repeat bottom left;
+	border: 1px solid #8d2f0e;
+	border-bottom: 2em solid #8d2f0e
+}
+
+#splash .two_cols { 
+	background: url('../images/std01_061524.gif') no-repeat top center; 
+	float: left;
+	width: 100%;
+	text-align: center;
+	padding-top: 3em
+}
+
+.button { 
+	margin: 20px auto; 
+	width: 210px
+}
+
+#splash .two_cols .column .button { margin: 20px auto; width: 210px}
+#splash .two_cols .column .arrow  { padding-left : 5px; vertical-align: middle}
+#splash .two_cols .column h2 a:hover { text-decoration : none; }
+
+
+#splash h2 a { font-size: 90%; font-weight: bold; color: #000; text-transform: uppercase;/* COLOUR CHANGE - match if you like */} 
+
+/* -- RIGHT COLUMN / CONTENT --*/
+#right_column { /* content area */
+	width: 700px;
+	float: right;
+	margin-right: 20px;
+	font-size: 1.3em; /* STANDARDIZE */
+	line-height: 1.3em; /* STANDARDIZE */
+	display: inline;
+	overflow: hidden
+}
+div#onecol div#right_column { /* content area for one column layouts */
+	width: 980px;
+	float: right;
+	margin-right: 20px;
+	font-size: 1.3em; /* STANDARDIZE */
+	line-height: 1.3em; /* STANDARDIZE */
+	overflow: hidden
+}
+/* -- AD BANNER --*/
+#ad_banner{/*padding-bottom:1em;*/
+clear:both;border:none;margin-bottom:0;}
+#ad_banner div{margin:-1em 0 0}
+
+#footer {
+	clear: both;
+	width: 980px;
+	padding-top: 20px
+}
+.row { /* a style to contain other elements on the page - gives a dotted border at the bottom of the area */
+	width: 720px;
+	float: left;
+	display: inline;
+	margin-right: -3px; /* IE 6 duplicate text fix */
+	margin-bottom: 20px;
+	border-bottom: 1px dotted #ccc;
+	overflow: hidden
+}
+div#onecol .row { /* a style to contain other elements on the page - gives a dotted border at the bottom of the area */
+	width: 1000px
+}
+.row p { margin-right: 20px}
+
+.two_cols {
+	background: url('../images/std01_061532.gif') repeat-y;	background-position: -5px 0
+}
+.three_cols {
+	background-image: url('../images/std01_061529.gif');
+	background-repeat:repeat-y;
+	background-position: -4px -50px
+}
+
+.two_cols_full .column {
+    width : 480px;
+}
+
+.two_cols .column { /* when a .column is placed inside a two_cols row you get 2 equal columns of 340px that fill the right_column */
+	width: 340px}
+
+.three_cols .column, .box .column, .two_thirds .other { /* when a .column is placed inside a three_cols row you get 3 equal columns of 220px that fill the right_column */
+	width: 220px}
+
+.two_thirds .column { /* use in combination with a photo, or to create a layout that splits the screen into 2 sections one twice as big as the second */
+	width: 460px}
+
+/* FOOTER STYLES ------------ */
+
+#full_footer { /* changed from orginal to make the footer span the whole bottom area */
+	border-top: 1px solid #7f7f7f;
+	padding-bottom: 1em;
+	width: 100%}
+
+#footer p { 
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #666;
+	font-size: .9em
+}
+#footer p.right { margin-right: 0}
+#footer a { color: #666}
+
+/* --- TITLE BARS --- */
+
+.row .header { /* a full length header that spans all columns -USE: wrap .header in a .row */
+	width: 700px;
+	height: 100%;
+	position: relative;
+	margin-right: 20px
+}
+
+.row .header, .highlight_box .header, .highlight_box_pnp .header, .highlight_box_pnpfr .header {
+	border-top: 3px solid #666;
+	border-bottom: 1px solid #999;
+	background-color: #e0e0b7; /* COLOUR CHANGE the background colour to your site's colour scheme */
+	background-repeat: no-repeat; 
+}
+
+
+/* ---- V1.2 code for early adopters --- */
+.two_thirds .column .header { /* use in combination with a photo, or to create a layout that splits the screen into 2 sections one twice as big as the second */
+	width: 460px}
+.two_cols .column .header { /* 2 seperate headers - USE: class="row two_cols" nest .content div inside, then nest .header div inside that */
+	width: 340px}
+.three_cols .column .header, .two_thirds .other .header { /* 3 seperate headers - USE: class="row three_cols" nest .content div inside, then nest .header div inside that */
+	width: 220px}
+.two_cols .split_lrg .content {
+	padding: 0 0 0 2px}
+.two_cols .split_lrg .content img {
+	float: left}
+
+.two_cols .split_lrg h3, .two_cols .split_lrg .content ul, .two_cols .split_lrg .content p {
+	float: left;
+	width: 160px; 
+	padding: .8em 0 0 10px
+} 
+
+.row .splt_lrg .header { margin-bottom: 0}
+
+.two_cols .split_lrg .content p { padding-top: .5em} /* overwrites prev statement to set the spacing back to default at the top */
+
+.column, .two_cols .column, three_cols .column, .two_thirds .column, .box, .two_thirds .other  {
+	display:inline;
+	float:left;
+	overflow: hidden;
+	margin-left:0;
+	margin-right:19px
+}
+/* ---- END V1.2 code for early adopters --- */
+/* ------ HEADERS MORE ------ */
+.header h1 {
+	color: #FFF;
+	margin: 5px 10px 0 10px;
+	padding: 0 0 7px 0;
+	font-size: 1.2em;
+	float: none
+}
+
+.header h2 {
+	color: #FFF;
+	margin: 5px 7px 0px 10px;
+	padding: 0 0 7px 0;
+	font-size: 1.1em;
+	float: none
+}
+
+.header h3 {
+	color: #FFF;
+	margin: 2px;
+	padding: 2px;
+	font-size: 1em;
+	float: none
+}
+
+
+.more { /* style for the more> links pulls the more out 30px from the right side of the block */
+	right: 26px;
+	float: right;
+	position: relative;
+	top: 5px;
+	padding: 0 0 0 30px;
+	font-size: .8em;
+	font-weight: bold;
+	text-transform: uppercase
+}
+
+.more img { /* positions the chevron/arrow after the MORE link */
+	position: absolute;
+	top: 5px;
+	right: -15px
+}
+
+.more a { color:#000; line-height: 1.9em}
+
+/* coloured box */
+
+.box {
+	float: left;
+	width: 720px;
+	background-color: #f8f6d7;
+	border-bottom: 1px solid #666;
+	margin: 10px 0 20px 0;
+	overflow: hidden
+}
+
+.box h3, .box p, .box ul, .box table { margin-left: 20px; margin-right: 20px}
+.box table td { border-top: 1px dotted #666}
+
+.box .more { right: 46px; padding-left: 40px}
+
+.box-grid {
+	width:inherit;
+	height:300px;
+}
+.box-tile {
+	margin: 1em;
+	border: 1px solid #ccc;
+	float: left;
+	width: 42%;
+	padding:1em;
+	height: 80px;
+/**background-color:#dddddd;**/
+}
+.box-tile:hover{
+       border: 1px solid #034879;
+	background:#E4F1FB;
+	transition: border 0.5s, background 0.5s;
+	-webkit-transition: border 0.5s, background 0.5s;
+}
+
+/* ---- PAGE ACTIONS (email,print,accessibility ) ----*/
+#pageActions{margin:0 !important;padding:0;float:right;text-transform:uppercase}
+#pageActions a:hover{text-decoration:underline}
+ul#pageActions, #pageActions ul {list-style-image:none;list-style-position:outside;list-style-type:none;padding: 10px 0 0}
+#right_column  #pageActions li{list-style-type:none;float:left;font-weight:bold}
+#pageActions li.email{background:url('../images/std01_061508.gif') no-repeat 1px 1px !important;font-size:.8em;font-family:arial;margin:0 !important}
+#pageActions .email a{margin:0;padding:0 10px}
+#pageActions li.print{background:url('../images/prdr013258.gif') no-repeat 1px 0px !important;font-size:1.1m;font-family:arial;margin:0 !important}
+#pageActions .print a{margin:0;padding:0 5px 0 22px}
+#pageActions li.accessibility{padding:0;margin:0 !important;font-size:.8em;font-family:arial}/* missing image background:url('../images/icon_accessible.gif') no-repeat 5px 1px !important;*/
+#pageActions .accessibility a{margin:0;padding:0 0 0 26px}
+#pageActions li.share{padding:0;margin:0 !important;font-size:.8em;font-family:arial}/*missing image background:url('../images/icon_share.gif') no-repeat 5px 1px !important;*/
+#pageActions .share a{margin:0;padding:0 0 0 18px}
+/* --- Photo/Nav Tops and Bottoms (decoration) -- */
+
+img.photo  {	/*border-top: 1px solid #fff;	border-bottom: 1px solid #fff;*/	width: inherit;	float: left}
+.column img.photo, .content img.photo { width: 210px; margin-left:5px}
+.photocap  { background-repeat: no-repeat; height: 6px; line-height: 1px; font-size: .1em; clear: left; margin-left:5px} /* used for the left floated series of images - you can put a caption below - this styles that caption */
+#left_column .photocap { margin-left:0}
+.photo_top    { width: 210px; background-image: url('../images/std01_061504.gif'); background-position: top left;  margin-left:5px; margin-top: 10px}
+.photo_bottom { width: 210px; background-image: url('../images/std01_061502.gif'); background-position: bottom left; margin-left:5px}
+
+.photocap_sm  { background-repeat: no-repeat; height: 6px; line-height: 1px; font-size: .1em; clear: left; }
+img.photo_sm  {	/*border-top: 1px solid #fff;	border-bottom: 1px solid #fff;*/ width: inherit; float: left}
+.column img.photo_sm, .content img.photo_sm { width: 160px;}
+.photo_top_sm    { width: 160px; background-image: url('../images/std01_061505.gif'); background-position: top left;  margin-top: 10px}
+.photo_bottom_sm { width: 160px; background-image: url('../images/std01_061503.gif'); background-position: bottom left; }
+
+/*
+.photocap_hl { background-repeat: no-repeat; height: 6px; line-height: 1px; font-size: .1em; clear : left; }
+img.photo_hl { width : inherit; float : left; }
+.highlight img.photo_hl { width: 206px; }
+.photo_top_hl { width : 206px; background-image: url('../images/std01_061879.gif'); background-position: top left; margin-top : 10px;}
+.photo_bottom_hl {  width : 206px; background-image: url('../images/std01_061880.gif'); background-position: bottom left; }
+*/
+
+.photocap_hl { background-repeat: no-repeat; height: 4px; line-height: 1px; font-size: .1em; clear : left; }
+img.photo_hl { width : inherit; float : left; width : 220px; }
+.photo_top_hl { width : 220px; background-image: url('../images/std01_061879.gif'); background-position: top left; margin-top : 5px;}
+.photo_bottom_hl {  width : 220px; background-image: url('../images/std01_061880.gif'); background-position: bottom left; }
+
+
+.chevron {
+    background-image: url('../images/std01_061496.gif');
+    background-position : center right;
+    background-repeat : no-repeat;
+    width : 100%;
+}
+
+h4.chevron a, h4.chevron a:link, h4.chevron a:visited, h4.chevron a:active {
+    display : block;
+    width : 100%;
+    color : #0099FF;
+}
+
+h4.chevron a:hover {
+    color : #eeab26;
+}
+
+.nav_top      { background-image: url('../images/std01_061501.gif'); background-position: top left}
+.nav_bottom   { background-image: url('../images/std01_061500.gif'); background-position: bottom left}
+#left_column .photolink { /*width: 260px;*/ width: 250px}
+.photolink       { width: 125px; float: left}
+.photolink a     { font-weight: bold}
+.photolink .text { float: left; padding: 5px 0 0 5px; color: #FFF /* set colour of link text under photos/ministers photo here */}
+
+.icon_top     { width:125px; background-image: url('../images/std01_061498.gif'); background-position: top left}
+.icon_bottom  { width:125px; background-image: url('../images/std01_061497.gif'); background-position: bottom left}
+.icon { 	width: 125px; 	float: left; padding-bottom: 20px}
+.icon .photolink, .icon .photocap { padding-right:0; margin-left:0}
+
+.spacer { float: left; width: 40px}
+.half_spacer { float: left; width: 19px}
+
+.mini_spacer { float: left; width: 5px}
+
+/* -- COLOURS --*/
+.grey { background-color: #868686}
+.mycolour { background-color: #000}
+.red { background-color:#F30}
+
+/* --- CONTENT AREA LISTS --- */
+
+#right_column ol li, #right_column ul li {
+	color:#000;
+	padding-left: 5px;
+	line-height: 150%
+}
+
+#right_column ul li {
+	list-style-type:disc;
+	margin-left: 20px;	
+}
+
+#right_column ol li {
+	margin-left: 30px;
+}
+
+/* .column li a, .content li a { font-size: 90%} */
+
+.column ul, .content ul   { margin: 0; padding: 0; margin-bottom: 20px; margin-top: 10px}
+
+
+.content ul.topics {
+    margin-left : 30px;
+}
+
+/* ------ GRID - ------------ */
+
+
+
+.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_8plus, .grid_9, .grid_10, .grid_11, .grid_12, .grid_13, .grid_14, .grid_15, .grid_16  {
+	display:inline;
+	float:left;
+	border-right: 1px dotted #ccc;
+	overflow: hidden;
+	margin-left:0;
+	padding-right: 9px;
+	margin-right:10px
+}
+
+/*.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12, .grid_13, .grid_14, .grid_15, .grid_16 {
+	background-color: #CCFFFF;
+	border: 1px dotted green;
+}*/ /* For planning, testing debugging */
+/* widths WIDER THAN THE #right_column NAV GRID BOXES */
+#wrapper .grid_16, .grid_16 .header { /* whole page minus 20px (nav extra space) */	width:960px}
+#wrapper .grid_15, .grid_15 .header {	width:880px}
+#wrapper .grid_14, .grid_14 .header {	width:820px}
+#wrapper .grid_13, .grid_13 .header {	width:760px}
+
+/* END widths WIDER THAN THE #right_column NAV GRID BOXES */
+
+#wrapper .grid_12, .grid_12 .header { /* whole right_column */	width:700px}
+#wrapper .grid_11, .grid_11 .header {	width:640px}
+#wrapper .grid_10, .grid_10 .header {	width:580px}
+#wrapper .grid_9, .grid_9 .header {	width:520px}
+
+#wrapper .grid_8plus, .grid_8plus .header {  /* for layouts w no left nav - transitional */	width:500px}
+#wrapper .grid_8, .grid_8 .header { /* two thirds of right_column */	width:460px}
+#wrapper .grid_7, .grid_7 .header {	width:400px}
+#wrapper .grid_6, .grid_6 .header { /* half of right_column */	width:340px}
+#wrapper .grid_5, .grid_5 .header {	width:280px}
+#wrapper .grid_4, .grid_4 .header { /* one third of right_column */	width:220px}
+#wrapper .grid_3, .grid_3 .header { /* a quarter of right_column */	width:160px}
+#wrapper .grid_2, .grid_2 .header {	width:100px}
+#wrapper .grid_1, .grid_1 .header {	width:40px}
+
+/* ------ GRID - ------------ */
+.grid_1,.grid_2,.grid_3,.grid_4,.grid_5,.grid_6,.grid_7,.grid_8,.grid_8plus,.grid_9,.grid_10,.grid_11,.grid_12,.grid_13,.grid_14,.grid_15,.grid_16
+{display:inline;float:left;border-right:1px dotted #ccc;overflow:hidden;margin-left:0;padding-right:9px;margin-right:10px}
+.grid_6plus,.grid_7plus,.grid_9plus,.grid_10plus,.grid_11plus,.grid_12plus,.grid_13plus,.grid_14plus,.grid_15plus,.grid_16plus
+{display:inline;float:left;/*border-right:1px dotted #ccc;*/overflow:hidden;margin-left:0;padding-right:9px;margin-right:10px}
+
+/* *******-- grid_#plus<--- ******* whole page FOR CURRENT 980px width - adapted grid adds 20px to accomodate the first round of templates */
+#wrapper .grid_16plus,.grid_16plus .header {width:980px}
+#wrapper .grid_16,.grid_16 .header{/* whole page minus 20px (nav extra space) */width:960px}
+#wrapper .grid_15plus,.grid_15plus .header {width:900px}
+#wrapper .grid_15,.grid_15 .header {width:880px}
+#wrapper .grid_14plus,.grid_14plus .header{width:840px}
+#wrapper .grid_14,.grid_14 .header {width:820px}
+#wrapper .grid_13plus,.grid_13plus .header{width:780px}
+#wrapper .grid_13,.grid_13 .header {width:760px}
+/* END widths WIDER THAN THE #right_column NAV GRID BOXES */
+#wrapper .grid_12plus,.grid_12plus .header{width:720px}
+#wrapper .grid_12,.grid_12 .header {width:700px}/* width of whole right_column WITH NAV */
+#wrapper .grid_11plus,.grid_11plus .header{width:660px}
+#wrapper .grid_11,.grid_11 .header {width:640px}
+#wrapper .grid_10plus,.grid_10plus .header {width:600px}
+#wrapper .grid_10,.grid_10 .header {width:580px}
+#wrapper .grid_9plus,.grid_9plus .header{width:540px}
+#wrapper .grid_9,.grid_9 .header {width:520px}
+/* for layouts w no left nav - transitional */
+#wrapper .grid_8plus,.grid_8plus .header{width:500px}
+#wrapper .grid_8,.grid_8 .header {width:460px}/* two thirds of right_column WITH NAV */
+#wrapper .grid_7plus,.grid_7plus .header{width:420px}
+#wrapper .grid_7,.grid_7 .header {width:400px}
+#wrapper .grid_6plus,.grid_6plus .header{width:360px}
+#wrapper .grid_6,.grid_6 .header {width:340px/* half of right_column WITH NAV */}
+#wrapper .grid_5,.grid_5 .header {width:280px}
+#wrapper .grid_4,.grid_4 .header {width:220px}/* one third of right_column WITH NAV */
+#wrapper .grid_3,.grid_3 .header {width:160px}/* a quarter of right_column WITH NAV */
+#wrapper .grid_2,.grid_2 .header {width:100px}
+#wrapper .grid_1,.grid_1 .header {width:40px}
+/* -- USEFUL for NESTING grid items -- remove last margin in set */
+
+
+.nomargin { margin: 0} /* removes all margins */
+.nobordergrid { padding-right : 10px; border: 0;} /* removes borders between adjacent grid cells */
+.noborder { border : 0 }
+
+div.ba_caption {
+    padding: 10px 0 0 10px;
+    margin-right : 0;
+}
+
+.borderboth { padding-left:9px;border-right: 1px dotted #ccc;border-left: 1px dotted #ccc}
+/* --------- CLEARING ------------*/
+html body div.clear, html body span.clear {
+	background:none;
+	border:0;
+	clear:both;
+	display:block;
+	float:none;
+	font-size:0;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+	visibility:hidden;
+	width:0;
+	height:0
+}
+* html .clearfix {
+	height:1%
+}
+.clearfix {
+	display:block
+}
+/* clearfix */
+.clearfix:after, .row:after {content:".";display:block;height:0;clear:both;visibility:hidden}
+.clearfix, .row {display:inline-block} /*Those two .clearfix have to be separate!)*/
+.clearfix, .row {display:block}
+
+/* CHANGE-ABLE */
+
+#right_column .content .nobulletlist li {
+	margin: 0;
+	padding: 0;
+	list-style-type: none
+}
+
+/* appended changeme.css --- clean up */
+
+/* CSS Document */
+/* $Id: changeme.css 65 2009-07-06 21:16:16Z DragKng $ */
+
+body { 
+	background-color: none; 
+	color: #000; 
+	font: 62.5%;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	text-align: center; 
+	line-height: 1.3em
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+
+
+/* HEADERS -------------------------------------------------------------------------- */
+h1 {
+	color: #333;
+	/*color: #003f62*/ /* COLOUR CHANGE */ /* replace H tags colour with your own */
+	/* default margins = margin: 0.5em 0 1em 0; for h tags: in this order: top, right, bottom, left */ 
+}
+h2 {
+	color: #333;
+	/*color: #003f62*/ /* COLOUR CHANGE */
+}
+h3 {
+	color: #333;
+	/*color: #003f62*/ /* COLOUR CHANGE */
+	/* default margins = margin: 0.5em 0; for h tags: in this order: top/bottom, right/left */
+}
+h4 {
+	color: #333;
+	/*color: #003f62*/ /* COLOUR CHANGE */
+}
+
+/* POSITIONING - generic use =------------------------------------------------------- */
+
+.large { /* larger text - this is arbitrarily large - I made it for TCU */
+	font-size: 1.4em;
+	margin-top: 20px;
+	display: block
+}
+
+hr { color: #bfbfbf; background-color: #bfbfbf; }
+hr.thick { height: 3px; color: #666; background-color: #666 } /* thicker separator line - change colour if desired for greater emphasis */
+/* comment out and suggest ways to use this class */
+
+/* LINKS ------------------------ default link style */
+
+a,  a:link,  a:visited,  a:active {
+	color: #0066CC /* COLOUR CHANGE */
+}
+a:hover {
+	text-decoration: underline;
+	color: #8f2d37 /* COLOUR CHANGE */
+}
+a h4 { color: #003f62 } /* COLOUR CHANGE */
+a:hover h4 { text-decoration:underline }
+a#skipNav:active, a#skipNav:focus { color: #003f62 } /* Colour for skipnav link when tabbed / clicked - is white to hide it ohterwise */
+.more a, .more a:link, .more a:visited, .more a:active { color:#003f62 }
+/* NAVIGATION STYLE - will eventually change to accomodate full grid system  */
+
+/* IMAGE PATHS + THEME / COLOUR CHANGES -- change to match your site structure */
+
+#arc {
+	background: #034879 url('../images/std01_061506.gif') no-repeat;
+}
+
+#navbar { /* the main nav bar */
+        background : #65060e url('../images/std01_061507.jpg') no-repeat left center;	 /* COLOUR CHANGE - replace Background colour with your colour that matches the graphic */ 
+}
+
+#navbar p a { /* links in navbar */
+	color: #fff; /* COLOUR CHANGE - MAKE SURE CONTRAST IS VERY HIGH */
+	padding: 0 10px 0 8px;
+	border-right: 2px solid #fff /* COLOUR CHANGE (the bars in between)  - MAKE SURE CONTRAST IS VERY HIGH */	
+}
+
+/*.nav_top      { background-image: url('../images/std01_061501.gif');  }
+.nav_bottom   { background-image: url('../images/std01_061500.gif');  }*/
+.main_top     { background-image: url('../images/std01_061499.gif')}
+.photo_top    { background-image: url('../images/std01_061504.gif')}
+.photo_bottom { background-image: url('../images/std01_061502.gif')}
+.icon_top     { background-image: url('../images/std01_061498.gif')}
+.icon_bottom  { background-image: url('../images/std01_061497.gif')}
+/*missing image .photo_long { background-image: url('../images/corner_photo_long.gif')}*/
+
+/* ------------ SPLASH PAGE ------------*/
+
+#splash {
+	background-image: url('../images/std01_061506.gif'); /* re-uses HEADER ARC image no need to change */
+	border-color: #65060e; /* COLOUR CHANGE this is a colour that matches your site *** make sure to make a header ARC image to match if changing it */
+	border-bottom-color: #65060e /* COLOUR CHANGE this is a colour that matches the MAIN NAVIGATION BAR  */
+}
+
+#splash .two_cols { 
+	background-image: url('../images/std01_061524.gif');  /* this line matches the outline of the border above - Graphic in file: Splash_Master.psd */
+}
+
+#splash h2 a { color: #003f62 /* COLOUR CHANGE language links - match if you like */} 
+
+.two_cols {	background-image: url('../images/std01_061532.gif')} /* PATH CHANGE */
+.three_cols { background-image: url('../images/std01_061529.gif')} /* PATH CHANGE */
+
+#searchBox { /* search box */
+	background-color: #fff; /* COLOUR CHANGE */
+	border: 1px solid #1d2d44
+}
+
+#submit { /* submit button */
+	background-color: #1d2d44;
+	width: 28px;
+	height: 28px;
+	border: 0;
+	color: #fff; /* COLOUR CHANGE */
+	vertical-align:top
+}
+
+#banner { /* holds flash banner or static banner */
+ border-bottom: 4px solid #eebc23;
+ overflow:hidden;
+ height:185px;/* COLOUR CHANGE - this is the colour stripe under the flash banner */
+}
+
+.leftnav .header {
+	/* border-color: #FFF; */
+	border : 0;
+	background: #333 url('../images/std01_061474.gif') no-repeat; /* COLOUR CHANGE header BG image match #colour to bottom half of arc graphic */
+}
+
+.leftnav .header a { 	color: #fff   /* Link in Navigational Header */}
+/* COLOUR CHANGE header BG image match #colour to bottom half of arc graphic */
+.leftnav .mycolour .header {
+	/* border-color: #fff; */
+	border : 0;
+	background-color: #042d4e;
+	/* background-image: url('../images/std01_061474.gif'); */
+	background-image : url('../images/std01_061470.gif');
+}
+/* COLOUR CHANGE update font to contrast w BG color (above in .leftnav .mycolour .header) */
+.leftnav .mycolour .header a { 	color:#fff  }
+
+/* MENU - Current item colour - USE to DESIGNATE THE CURRENT PAGE - add this id to the appropriate li in the menu */
+#current { background-color: #f7f7f7; }
+
+#contacts { display: none; } /* closes the menu by default */
+#explore { 	display: none; } /* closes the menu by default - add your own menu items here */
+
+.row .header, .highlight_box .header, .highlight_box_pnp .header, .highlight_box_pnpfr .header { /* attributes for all header bars */
+	border-top-color: #efbd21;
+	border-bottom-color: #003366;
+	background-color: #003366; /* COLOUR CHANGE the background colour to your site's colour scheme */
+	color: #fff /* color for all row headers */
+}
+
+.row .header_spotlight { /* attributes for all header bars */
+	border-top-color: #042d4e;
+	border-bottom-color: #65060e;
+	background-color: #65060e; /* COLOUR CHANGE the background colour to your site's colour scheme */
+	background-image: url('../images/std01_061475.gif'); /* CHANGE PATH to match your site structure */
+	
+}
+
+.header_spotlight h1, .header_spotlight h2 {
+	color : #fff;
+}
+
+
+/* EXTRA CLASS FOR MULTIPLE COLOURED HEADER BARS - uncomment to use
+-  USE: If you want to have multiple colours of title bars - you may need this class - if the colours contrast a lot the MORE link will also change - use this class to change it 
+------------------------------------------------------------------------ */
+
+/*.mycoloured .header .more a, .mycoloured .header .more a:link, .mycoloured .header .more a:active, .mycoloured .header h2 { color:#fff }
+.mycoloured .header { 
+	border-top-color: #3888ac;
+	border-bottom-color: #0d73a1;
+	background: #0d73a1 url('../images/std01_061474.gif') no-repeat; 
+} */
+
+
+.mycolour { background-color: #003f62 } /* COLOUR CHANGE this is a colour that matches your site *** make sure to make a header ARC image to match if changing it */
+.mycolour .header {
+	border-top: 1px solid #3888ac;
+	border-bottom: 1px solid #47501c;
+	/*missing image background: #0d73a1 url('../images/arc_right_main_darkteal.gif') no-repeat; */
+} 
+.mycolour .header h2 { color:#FFF;!important }
+
+.more a, .more a:active  { color:#003f62}
+.more a:hover {color:#003f62}
+.more a:visited {color:#003f62}
+
+.header_spotlight .more a, .header_spotlight .more a:active  { color:#fff}
+.header_spotlight .more a:hover {color:#003f62}
+.header_spotlight .more a:visited {color:#003f62}
+
+
+.box { /* v2.1 class */
+	background-color: #f8f6d7;
+	border-bottom: 1px solid #666
+}
+.box table td { border-top: 1px dotted #666}
+
+.photolink .text {
+	color: #fff /* set colour of link text under photos here */}
+.date  { color: #000 /* CHANGE COLOUR OF NEWS DATES here */ } 
+
+.navy { background-color: #042c4f}
+.navylt { background-color : #08416c }
+.blue { background-color : #003366; }
+.gold { background-color: #efbd21}
+.grey { background-color: #868686}
+
+/* ------ GRID - ------------ */
+/*    GRID BOX SIZES (reference)  
+
+- when nesting grid elements inside each other (as opposed to stacking them inline) use .nomargin to remove the margin of the last nested column in a set 
+REASON: each grid element is given a right-margin automatically.  If you nest two or more grid pieces inside another the redundant margin breaks the layout 
+
+.grid1 - 40px
+.grid2 - 100px
+.grid3 - 160px (1/4 right_column)
+.grid4 - 220px (1/3 right_column)
+.grid5 - 280px
+.grid6 - 340px (1/2 right_column)
+.grid7 - 400px
+.grid8 - 460px (2/3 right_column)
+.grid9 - 520px
+.grid10 - 580px (3/4 right_column)
+.grid11 - 640px
+.grid12 - 700px (whole right_column)
+
+
+
+.grid13 - 760px
+.grid14 - 820px
+.grid15 - 880px
+.grid16 - 960px
+
+
+
+/* --- ACCESSIBILITY ---- ncs EDIT added may3/09 use to hide h1s or h2s you don't want visible to the sighted but read by screen readers*/
+h1.accessible,h2.accessible{float:right;margin:-9999px}
+.paddingTop{padding :10px 0 0 0}
+#wrapper #splash .button a{background-color:#FFF}
+
+/* --- Add the class .showmethegrid to the wrapper to see the grid ---*/
+#wrapper.showmethegrid{background:#fff url('../images/std01_061517.gif') repeat-y;background-position:bottom left;padding-right:0}
+#right_column.showmethegrid{background-position:bottom left;padding-right:0}/*missing image background:#fff url('../images/gridhelper_rightcolumnonly_12cols.gif') repeat-y;*/
+/* ------ GRID - ------------ */	
+
+#right_column .news ul li { list-style-type: none; margin: 0; padding: 0 5px } /* for list of news items in a column */ 
+
+/*=jump search - requested by FIN
+---------------*/
+#jumpSearch {
+	background: url('/images/jumpRight.gif') 100% 10px no-repeat;
+	padding-right: 3px;
+	margin-bottom: 1em;
+	/*padding-top: 10px;*/
+	float: right;
+	/*width: 565px;
+	w\idth: 562px;*/
+	width: 394px;
+	w\idth: 391px;
+}
+#jumpSearch form {
+	background: url('/images/jumpMiddle.gif') left top repeat-x
+}
+#jumpSearch fieldset {
+	border: none;
+	height: 28px;
+	background: url('/images/jumpLeft.gif') left top no-repeat;
+	padding-top: 4px
+}
+#jumpSearch label, #jumpSearch select, #jumpSearch input { vertical-align: middle; }
+#jumpSearch label {
+	font-weight: bold;
+	padding: 0 0 0 7px
+}
+#jumpSearch select {
+	font-size: 1.1em;
+	border: 1px solid #63865a
+}
+#jumpSearch input#jumpGo {
+	width: 25px;
+	height: 25px;
+	border:0
+}
+
+/* --- right nav styles */
+
+#right_nav {
+    float : right;
+    width : 120px;
+    margin-left : 20px;
+    margin-bottom : 10px;
+}
+
+#right_nav .photocap {
+    clear : none;
+    margin-left : 0;
+    height : 5px;
+}
+
+#right_nav .nav_top {
+    background-image : url('../images/std01_061878.gif');
+}
+
+#right_nav .header {
+    background : #042d4e url('../images/std01_061470.gif') top left no-repeat;
+}
+
+#right_nav .header h2 {
+    color : #FFF;
+    margin : 0;
+    padding: 4px 0px 6px 0px;
+    font-size : 100%;
+    text-align : center;
+}
+
+#right_nav ul, #right_nav ul li {
+    padding : 0;
+    margin : 0;
+}
+
+#right_nav ul li a {
+    width : 100%;    /* IE 6 */
+    display : block;
+    margin-top : 4px;
+}
+
+#right_nav ul li {
+    list-style-type : none;
+    float : left;
+    clear : left;
+}
+
+
+/* --- highlight box styles */
+
+.highlight_box {
+    width : 220px;
+    position : relative;
+    margin-bottom : 1em;
+}
+
+.highlight_box_pnp {
+    width : 160px;
+    position : relative;
+    float : left;
+	margin-bottom : 30px;
+	margin-left: 37px; 
+	padding: 40px 0 0;
+}
+
+.highlight_box_pnpfr {
+    width : 194px;
+    position : relative;
+    float : left;
+	margin-bottom : 30px;
+	margin-left: 20px; 
+	padding: 40px 0 0;
+}
+.highlight_box_left {
+    float : left;
+    clear : left;
+    padding-right : 10px;
+    margin-right : 10px;
+}
+
+.highlight_box_right {
+    float : right;
+    clear : right;
+    padding-left : 10px;
+    margin-left : 10px;
+}
+
+/* .highlight_box .header defined earlier, do a search */
+
+.highlight_box .header {
+    background-position : -200px 0px;
+}
+
+/* .header h3 defined earlier, do a search */
+
+.highlight_box .header h3.extra {
+    margin : 2px;
+    padding : 2px;
+    width : 100%; /* IE 6 */
+}
+
+.highlight_box .header a {
+    display : block;
+    color : #FFF;
+    padding : 2px;	/* make sure to keep these in sync with '.header h3' style, do a search */
+    width : 100%; /* IE 6 */
+}
+
+.highlight_box_pnp .header a, .highlight_box_pnpfr .header a {
+    display : block;
+    color : #FFF;
+    padding : 2px;	/* make sure to keep these in sync with '.header h3' style, do a search */
+    width : 130px; /* IE 6 */
+}
+
+.highlight_box .header a:hover {
+    text-decoration : none;
+}
+
+.highlight_imgcap {
+    background-color : #f5f2e9;
+    padding-top : 5px;
+}
+
+.highlight {
+    background-color : #f5f2e9;
+    border-top : 1px solid #f5f2e9;
+    border-bottom : 1px solid #f5f2e9;
+    padding : 0 7px;
+    font-size : 85%;    
+    width : 206px; /* IE 6 */    
+}
+
+.highlight_pnp {
+    background-color : #f5f2e9;
+    border-top : 1px solid #f5f2e9;
+    border-bottom : 1px solid #f5f2e9;
+    padding : 0 7px;
+    font-size : 85%;    
+    width : 146px; /* IE 6 */    
+    height : 170px; /* IE 6 */    
+}
+
+.highlight_pnpfr {
+    background-color : #f5f2e9;
+    border-top : 1px solid #f5f2e9;
+    border-bottom : 1px solid #f5f2e9;
+    padding : 0 7px;
+    font-size : 85%;    
+    width : 180px; /* IE 6 */    
+    height : 180px; /* IE 6 */    
+}
+
+.highlight p {
+    margin : 0.5em 0 0.75em;
+}
+
+/* --- contrib */
+
+/*
+.main_content a {
+    text-decoration : underline;
+}
+*/
+
+.main_content a:visited {
+    /* color : #666; */
+}
+
+.main_content ul {
+    margin-top : 1em;
+    margin-bottom : 1.5em;
+}
+
+.main_content ul ul {
+    margin-top : 0;
+    margin-bottom : 0;
+}
+
+#right_column ul.error {
+    margin-top : 0;
+    margin-bottom : 0.5em;
+} 
+
+#right_column ul.error li {
+    color : #a80a17;
+}
+
+/* bajwaya - revisit */
+#right_column table {
+    margin-bottom : 1.5em;
+}
+
+#right_column h3 em {
+    font-weight : normal;
+}
+
+/* --- sitemap */
+
+ul#sitemap li {
+    list-style-type : none;
+    margin-left : 0;
+    padding-left : 0;
+}
+
+ul#sitemap ul li {
+    margin-left : 20px;
+}
+
+/* --- news */
+
+.news_item h2, .news_footer {
+    width : 550px;
+    border-top : 1px dotted #999;
+
+}
+
+.news_item h2 {
+    padding-top : 0.5em;
+}
+
+.news_item p {
+    margin-top : 0.5em;
+}
+
+.news_item span.date {
+    font-weight : bold;
+}
+
+p.news_archive {
+    margin-top : 0;
+}
+
+p.news_archive a.active {
+    background-color : #eae2ca;
+    padding-left : 2px;
+    padding-right : 2px;
+}
+
+h3.news_rss {
+    margin-bottom : 1em;
+}
+
+/* --- forms */
+
+form.content_form {
+    border-top : 1px solid white; /* force consistent rendering for IE */
+}
+
+form.content_form p {
+    margin : 1.5em 0 1em;
+}
+
+form p.first {
+    margin-top : 0.5em;
+}
+
+textarea {
+    display : block;
+    overflow : auto; /* IE */
+
+}
+
+select {
+    display : block;
+    
+}
+
+textarea:focus {
+    outline : none;
+}
+
+input.hidden {
+    display : none;
+}
+
+#feedback, #ask_expert, textarea {
+    width : 550px;
+}
+
+#std_submit_buttons {
+    float : right;
+    margin : 0.5em 0 1em;
+}
+
+#std_submit_buttons.left_buttons {
+    float : none;
+}
+
+#ask_expert_reply_info  {
+    text-align : right;
+    width : 27em;
+    
+}
+
+#ask_expert_reply_info input {
+    font-size : 100%; /* IE */
+    width : 17em;
+}
+
+
+#ask_expert_reply_info div.last {
+    margin-top : 5px;
+}
+
+#survey ol {
+    margin-left : 1.75em;
+    margin-bottom : 1em;
+}
+
+#survey ol li {
+    line-height : 125%;
+    margin-top : 1.5em;
+    margin-left : 0;
+    padding-left : 0;
+}
+
+#survey ol li.first {
+    margin-top : 0;
+}
+
+#survey .survey_choices {
+    margin-top : 0.25em;
+}
+
+#survey .detail_box {
+    margin-top : 0.5em;
+}
+
+#survey textarea {
+    width : 400px;
+}
+
+/*
+#survey_find_detail {
+    width : 400px;
+}
+
+#survey_find_detail_box {
+    margin-top : 0.25em;
+}
+
+#survey_find_detail_box textarea {
+    margin-top : 0.25em;
+}
+*/
+
+/* 404 page -- easier to keep this in one place although repeating some css */
+
+#arc form.err404 {
+    margin: 30px 0 0 0;
+}
+
+#arc form.err404 p {
+    margin-top : 5px;
+}
+
+#arc form.err404 label {
+    color : #fff;
+    font-size : 1.2em;
+    padding-right : 5px;
+}
+
+#right_column div.err404 .content {
+    padding : 20px 20px 0 40px;
+}
+
+#navbar.dual {
+    font-size : 1.1em;
+    height : 4.5em;
+}
+
+#navbar.dual p {
+    font-size : 100%;
+    padding : 0;
+    line-height : 2.25em;
+    
+}
+
+.rc_err404 {
+        margin-top : 10px;
+	background: transparent url('../images/oi_img_vert_bar.gif') repeat-y 480px 0px;	
+}
+
+
+/* javascript styles */
+
+#relatedmenu_more { 
+    margin-bottom : 10px;
+    border-bottom: 1px dotted #666;
+    text-align : center;
+    padding : 2px 0px 2px;
+    background: #e8e8e0 url("../images/std01_061480.gif") no-repeat 235px center; 
+}
+
+#relatedmenu_more a { 
+    display : block; 
+    font-size : 90%; 
+}
+
+#pageActions {
+    visibility : hidden;
+}
+
+
+/* maps */
+
+.map_markers {
+    display : block;
+}
+
+.map_markers ._map_lng {
+    display : none;
+}
+
+
+.map_markers ._map_lat {
+    display : none;
+}
+
+
+.map_address {
+    line-height : 1.2;
+    font-size : 90%;
+    margin-bottom : 1em;
+}
+
+/* FAST search */
+
+#fast_content {
+    position : relative;
+    width : 100%;
+    border-top : 1px solid white;
+    margin-top : 0.25em;
+}
+
+#fast_input { /* search box */
+    width: 300px;
+}
+
+#fast_links {
+    position : absolute;
+    top : 0;
+    right : 40px;
+    margin : 0;
+    padding : 1em 0 0 0;
+   
+}
+
+#right_column #fast_links li {
+    list-style : none;
+    background :  url("../images/std01_061480.gif") no-repeat 0 50%;
+    padding-left : 15px;
+    line-height : 1.6;
+}
+
+#fast_summary {
+    margin-top : 2.5em;
+    border-top : 1px dashed #AAA;
+    padding-top : 1em;
+    width : 700px; /* IE 6 */
+}
+
+#fast_summary .range, #fast_summary .total, #fast_summary .search_text {
+    font-weight : bold;
+}
+
+#fast_results .fast_header {
+    font-size : 1em;
+    padding : 0;
+    margin-bottom : 0;
+}
+
+#right_column #fast_results li {
+    margin-left : 4em;
+    margin-right : 50px;
+}
+
+
+#fast_results .description {
+    margin-top : 0.5em;
+    margin-bottom : 0;
+    text-align : justify;
+}
+
+#fast_results .format {
+    margin-top : 0.25em;
+    color : #555;
+}
+
+#fast_results .format_size {
+    padding-left : 1em;
+}
+
+#fast_pages {
+    text-align : center;
+    margin-bottom : 0;
+
+}
+
+#fast_pages .current {
+    text-decoration : underline;
+   
+}
+
+/* generated content */
+/*
+h1:after {
+    color : #CCC;
+    content : " [H1]"
+}
+
+h2:after {
+    color : #CCC;
+    content : " [H2]"
+}
+
+h3:after {
+    color : #CCC;
+    content : " [H3]"
+}
+
+p > strong:after {
+    color : #CCC;
+    content : " [SP]"
+}
+
+p:after {
+    color : #CCC;
+    content : "¶";
+}
+
+div.embox:before {
+    color : #CCC;
+    content : "[embox-st]";
+}
+
+div.embox:after {
+    color : #CCC;
+    content : "[embox-end]";
+}
+
+
+strong > a:after, a > strong:after {
+    color : red;
+    font-weight : bold;
+    content : "[!]";
+}
+*/
+
+#iml_language_select {
+  display : inline;
+}
+
+#iml_link {
+  padding-left : 1em;
+  font-size : 75%;
+  color : #555;
+}
+
+#iml_link img {
+  vertical-align : bottom;
+}
+
+#iml_source_link {
+  display : none;
+}
+
+#iml_msg {
+  font-size : 75%;
+}
+
+#iml_content_block {
+  margin-top : 2em;
+}
+
+#iml_msg .iml_load_link {
+  color : #333;
+}
+
+.iml-rtl-article {
+   text-align : right;
+}
+
+.iml-rtl-article p,
+.iml-rtl-article h1,
+.iml-rtl-article h2,
+.iml-rtl-article h3,
+.iml-rtl-article h4,
+.iml-rtl-article h5,
+.iml-rtl-article h6,
+.iml-rtl-article ul li,
+.iml-rtl-article ol li,
+.iml-rtl-article font
+{
+    text-align:right;
+}
+.answers { 
+	display: none; 
+	background: #EFEFEF; 
+	padding: .5em 1em 1.5em 1em; 
+	margin-top: 5px; 
+	margin-bottom:10px; 
+}

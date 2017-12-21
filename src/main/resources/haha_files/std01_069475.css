@@ -1,0 +1,274 @@
+/* rules to override master stylesheet */
+
+
+/* the following styles format the custom text box for In My Language */
+
+.highlight_box_right {
+	border-left: 0px;
+	padding-left: 25px;
+}
+
+.highlight_imgcap {	
+	background-color: #003366;	
+	padding-top: 0px;	
+	}
+	
+.IML_header {
+	width : 260px; 
+	height : 23px;
+	background-image : url('../images/prod_130604.gif'); 
+	background-repeat : no-repeat; 
+    border-bottom : 1px solid #003366;
+    padding-bottom : 0;
+	}
+
+.highlight_IML {
+    background-color : #f5f2e9;
+    border-top : 1px solid #f5f2e9;
+    border-bottom : 1px solid #f5f2e9;
+    padding : 0 7px;
+    font-size : 85%;    
+    width : 246px; /* IE 6 */    
+}
+
+.highlight_box_IML {
+    width : 260px;
+    position : relative;
+    margin-bottom : 1em;
+    padding-bottom : 7px;
+}
+
+.highlight_IML p {
+    margin : 0.5em 0 0.5em;
+    padding-bottom : 7px;
+}
+
+.highlight_box_IML .IML_footer {
+	background-color : #003366;
+    padding : 1px;	/* make sure to keep these in sync with '.header h3' style, do a search */
+    width : 100%; /* IE 6 */
+}
+
+.highlight_box_IML .IML_footer h3 {
+    color : #c1b5ab;
+	text-align: center;
+	font-face: "Myriad Pro";
+}
+
+.photocap_hl_IML { background-repeat: no-repeat; height: 4px; line-height: 1px; font-size: .1em; clear : left; }
+img.photo_hl_IML { width : inherit; float : left; width : 300px; }
+.photo_top_hl_IML { width : 260px; background-image: url('../images/prod_130602.gif'); background-position: top left; margin-top : 5px;}
+.photo_bottom_hl_IML {  width : 260px; background-image: url('../images/prod_130603.gif'); background-position: bottom left; margin-top : -2px;}
+
+
+/* the following styles format the custom text boxes on the PNP ABOUT page */
+
+
+.row .header, .highlight_box_franco .header {
+	border-top: 3px solid #666;
+	border-bottom: 1px solid #999;
+	background-color: #e0e0b7; /* COLOUR CHANGE the background colour to your site's colour scheme */
+	background-repeat: no-repeat; 
+}
+
+.row .header, .highlight_box_franco .header { /* attributes for all header bars */
+	border-top-color: #efbd21;
+	border-bottom-color: #003366;
+	background-color: #003366; /* COLOUR CHANGE the background colour to your site's colour scheme */
+	color: #fff /* color for all row headers */
+}
+
+.highlight_franco {
+    background-color : #f5f2e9;
+    border-top : 1px solid #f5f2e9;
+    border-bottom : 1px solid #f5f2e9;
+    padding : 0 7px;
+    font-size : 85%;    
+    width : 286px; /* IE 6 */    
+}
+
+.highlight_box_franco {
+    width : 300px;
+    position : relative;
+    margin-bottom : 1em;
+    padding-bottom : 7px;
+}
+
+.highlight_franco p {
+    margin : 0.5em 0 0.5em;
+    padding-bottom : 7px;
+}
+
+.highlight_box_franco .header a {
+    display : block;
+    color : #FFF;
+    padding : 2px;	/* make sure to keep these in sync with '.header h3' style, do a search */
+    width : 100%; /* IE 6 */
+}
+
+.photocap_hl_franco { background-repeat: no-repeat; height: 4px; line-height: 1px; font-size: .1em; clear : left; }
+img.photo_hl_franco { width : inherit; float : left; width : 300px; }
+.photo_top_hl_franco { width : 300px; background-image: url('../images/stdprod_086982.gif'); background-position: top left; margin-top : 5px;}
+.photo_bottom_hl_franco {  width : 300px; background-image: url('../images/stdprod_086983.gif'); background-position: bottom left; }
+
+
+
+.box_photo_top_sm    { width: 340px; background-image: url('../images/stdprod_081890.gif'); background-position: top left;  margin-top: 10px}
+.box_photo_bottom_sm { width: 340px; height: 10px; background-image: url('../images/stdprod_081891.gif'); background-position: bottom left; background-color: #f3ddb8 }
+.videobox_photo_bottom_sm { width: 340px; height: 10px; background-image: url('../images/stdprod_081891.gif'); background-position: bottom left; background-color: #edede2 }
+
+.row {
+	border-bottom: none
+}
+
+.row .pnpheader {
+	border-top-color: #095f90;
+	border-bottom-color: #095f90;
+	background-color: #095f90;
+}
+
+.row .pnpheader h2 a {
+	color: #fff; 
+	text-decoration: none
+}
+
+a:hover {color:#0745f8}
+.row .pnpheader h2 a:hover {color:#f2ba45}
+
+p:last-child {
+	margin: 1em 0 0.2em /* sets new default margins for all last-child paragraphs */
+}
+
+.pnpbox1 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 300px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+.pnpbox2 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 355px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+.pnpbox3 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 358px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+.videobox1 { 
+	background-color: #edede2;
+	min-height: 260px;
+	padding: 2.5em 0 0.1em 0;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1em
+}
+
+.pnpbox4 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 101px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+.pnpbox5 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 200px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+.pnpbox6 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 260px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+.pnpbox7 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 275px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+.pnpbox8 { 
+	background-color: #f3ddb8; 
+	color: #000; 
+	min-height: 190px;
+	padding: 2.5em 1em 0.1em 1em;
+	font-size: 0.9em;
+	font-family: Verdana, Helvetica, Arial, sans-serif; 
+	line-height: 1.5em
+}
+
+/* ends PNP ABOUT page styles */
+
+/* the following styles lay out the  WHAT'S NEW BOX on the homepage */
+
+.grid_6rt  {
+	display:inline;
+	float:right;
+	overflow: hidden;
+	margin-right: 10px;
+	padding-left: 20px;
+	margin-left:0
+}
+
+.grid_6rt, .grid_6rt .nobordergrid, .grid_6rt .header { width:340px}
+
+/* ends  WHAT'S NEW BOX styles */
+
+
+
+/* reduces font size for H2 & H3 TAGS -- NOTE: ref .header h2 and .header h3 styles */
+
+h2 {
+	color: #000;
+	font-size: 1.1em;
+	padding-bottom: 6px 
+}
+h3 {
+	color: #000; 
+	font-size: 1.0em;
+	margin: 0.5em 0 /* default margins for h tags: in this order: top/bottom, right/left */
+}
+
+/* ends H2 & H3 HEADERS */
+
+
+
+
+/* additional color styles */
+
+.maroon { background-color: #4a1910}
+.germanblue { background-color: #095f90}
+
+
+/* ends COLOURS */

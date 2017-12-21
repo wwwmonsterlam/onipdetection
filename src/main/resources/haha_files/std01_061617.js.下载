@@ -1,0 +1,358 @@
+/* bonk_ncs - Edited June, 2009 to add a title change when a menu opens/closes  - for accessibility */
+
+/* --- left nav functions */
+
+function showHide(element_id) {
+	if (document.getElementById && document.getElementById(element_id) && document.getElementById(element_id).style) {
+		var menu  = document.getElementById(element_id);
+		var arrow = document.getElementById(element_id + '_arrow');
+		var title = document.getElementById(element_id + '_arrow');
+		var more = (element_id == oi_utils.morelink.menuid) && oi_utils.morelink.isAlive();
+
+		if (menu.style.display == "block") {
+			menu.style.display = "none";
+			if (arrow.src) { 
+				arrow.src = arrow.src.replace("down","left");
+				arrow.src = arrow.src.replace("01_061478","01_061479");
+				arrow.src = arrow.src.replace("01_061483","01_061484");
+			}
+			if (title.title) { title.title = title.title.replace("Close","Open");} 
+			if (more) { oi_utils.morelink.hide(); }
+		}
+		else {
+			menu.style.display = "block";
+			if (arrow.src) { 
+				arrow.src = arrow.src.replace("left","down");
+				arrow.src = arrow.src.replace("01_061479","01_061478");
+				arrow.src = arrow.src.replace("01_061484","01_061483");
+			}
+			if (title.title) { title.title = title.title.replace("Open","Close");}
+			if (more) { oi_utils.morelink.show(); }			
+			}
+		}
+		
+}
+
+function changeHeight(new_height) {
+	document.getElementById('banner').style.height = new_height + 'px';
+}
+
+function MoreLink(menuid) {
+    this.menuid = menuid;
+}
+
+// MoreLink
+
+MoreLink.itemClass = "hidemenuitem";
+MoreLink.marginClass = "restore_margin";
+
+MoreLink.prototype.build = function() {
+    if( !this.hasHiddenItems() ) {
+        this.restoreBoxMargin();
+        return false;
+    }
+
+
+    var pname = document.location.pathname;
+    var oi_prefix = "/OI";
+    
+    if( pname.indexOf(oi_prefix) === 0 ) {
+        pname = pname.substr(oi_prefix.length, pname.length);
+    }
+    
+    var lang = pname.indexOf("/en/") === 0 ? 'en' : 'fr';
+    var phrase;
+
+    if( pname == "/fr/living/OI_FR_HOW_LIVE_CITIES.html" ) {
+        phrase = "Afficher les __N__ régions";
+    } else if( pname == "/fr/working/OI_FR_HOW_WORK_CAREER_MAPS.html" ) {
+        phrase = "Afficher les __N__ fiches";
+    } else if( lang == "en" ) {
+        phrase = "Show all __N__ links";
+    } else {
+        phrase = "Afficher les __N__ liens";
+    }
+
+    var output = "<div id='__ID___more'><a href='#'>" + phrase + "</a></div>";
+
+
+    output = output.replace('__ID__', this.menuid).replace('__N__', this.items().length);
+    document.write(output);
+
+    var moreel = this.moreElement();
+    var ael = moreel.getElementsByTagName("A")[0];
+    var self = this;
+    ael.onclick = function() { self.expand(); };
+
+};
+
+MoreLink.prototype.isAlive = function() {
+    return this.hasHiddenItems();
+};
+
+MoreLink.prototype.hasHiddenItems = function() {
+    var items = this.items();    
+    return oi_utils.hasClassAttr(items[items.length-1], MoreLink.itemClass);
+};
+
+MoreLink.prototype.expand = function() {
+    var items = this.items();
+    this.hide();
+    for( var i = 0; i < items.length; i++ ) {
+        oi_utils.removeClassAttr(items[i], "hidemenuitem");
+    }
+};
+
+MoreLink.prototype.hide = function() {
+    var moreel = this.moreElement();
+    moreel.style.display = "none";
+    this.restoreBoxMargin();
+};
+
+MoreLink.prototype.show = function() {
+    var moreel = this.moreElement();
+    moreel.style.display = "block";
+    this.removeBoxMargin();
+};
+
+MoreLink.prototype.restoreBoxMargin = function() {
+    var boxel = this.boxElement();
+    oi_utils.addClassAttr(boxel, MoreLink.marginClass);    
+};
+
+MoreLink.prototype.removeBoxMargin = function() {
+    var boxel = this.boxElement();
+    oi_utils.removeClassAttr(boxel, MoreLink.marginClass);    
+};
+
+MoreLink.prototype.items = function() {
+    var boxel = this.boxElement();
+    return boxel.getElementsByTagName('LI');
+};
+
+MoreLink.prototype.boxElement = function() {
+    return document.getElementById(this.menuid + '_box');
+};
+
+MoreLink.prototype.moreElement = function() {
+    return document.getElementById(this.menuid + '_more');
+};
+
+
+/* OI namespace */
+
+OI = {};
+
+// -- DOM event compatibility
+
+OI.dom = {};
+
+OI.dom.eventTarget = function(e) {
+    return (e && e.target ? e.target : window.event.srcElement);
+};
+
+OI.dom.preventDefault = function(e) {
+    if(e && e.preventDefault) {
+        e.preventDefault();
+    } else {
+        window.event.returnValue = false;
+    }
+};
+
+OI.dom.stopPropagation = function(e) {
+    if(e && e.stopPropagation) {
+        e.stopPropagation();
+    } else {
+        window.event.cancelBubble = true;    
+    }
+};
+
+OI.dom.addEventListener = function( elm, eventType, handler, capture ) {
+    if( elm.addEventListener ) {
+        elm.addEventListener( eventType, handler, capture );
+    } else {
+        elm.attachEvent( "on" + eventType, handler );        
+    }
+};
+
+
+// -- Utils
+
+OI.utils = {};
+
+OI.utils.addSignals = function(fobj, signals) {
+    var fchild = fobj;
+    fobj = function() {
+        this.subs = {};
+        for (var i = 0; i < signals.length; i++) {
+            this.subs[signals[i]] = [];
+        }        
+        
+        fchild.apply(this, arguments);
+    };
+
+    fobj.prototype.subscribe = OI.utils.addSignals.subscribe;
+    fobj.prototype.emit = OI.utils.addSignals.emit;
+    
+    return fobj;
+};
+
+OI.utils.addSignals.subscribe = function(o,f,e) {
+    if (!(e in this.subs)) {
+        throw new Error('OI: Unknown Event');
+    }
+    this.subs[e].push( {'o' : o, 'f' : f} );
+};
+
+OI.utils.addSignals.emit = function(e, params) {
+    if (!(e in this.subs)) {
+        throw new Error('OI: Unknown Event');
+    }
+    
+    for (var i = 0; i < this.subs[e].length; i++ ) {
+        var target = this.subs[e][i];
+        var obj = target.o;
+        var fn = target.f;
+        fn.apply(obj, params);
+    }
+};
+
+OI.utils.hasClassAttr = function(el, className) {
+   var classList = OI.utils.getClassList(el);
+   for(var i = 0; i < classList.length; i++) {
+       if( className == classList[i] ) {return true;}
+   }
+   return false;  
+};
+
+OI.utils.addClassAttr = function(el, className) {
+   var classList = OI.utils.getClassList(el);
+   for(var i = 0; i < classList.length; i++) {
+       if( className == classList[i] ) {return;}
+   }
+   classList.push(className);
+   el.className = classList.join(" ");
+};
+
+OI.utils.removeClassAttr = function(el, className) {
+   var classList = OI.utils.getClassList(el);
+   for(var i = 0; i < classList.length; i++) {
+       if( className == classList[i] ) {
+           classList.splice(i, 1);
+           break;
+       }
+   }
+   el.className = classList.join(" ");
+};
+
+OI.utils.getClassList = function(el) {
+    var className = OI.utils.trim(el.className);
+    return className ? className.split(/\s+/) : [];
+};
+
+OI.utils.trim = function(s) {
+    return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+};
+
+OI.utils.addCSS = function(href) {
+    var ss = document.createElement("link");
+    ss.type = "text/css";
+    ss.rel = "stylesheet";
+    ss.href = href;
+    document.getElementsByTagName("head")[0].appendChild(ss);
+};
+
+OI.utils.getURLParams = function(q) {
+    var e,
+    u = {},
+    a = /\+/g,  // Regex for replacing addition symbol with a space
+    r = /([^&=]+)=?([^&]*)/g,
+    d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
+   
+    q = q.substring(1);
+   
+    while (e = r.exec(q))
+       u[d(e[1])] = d(e[2]);
+    
+    return u;
+}
+
+OI.utils.IMLLangs = [
+  {code : "ar", name_en : "\u0639\u0631\u0628\u064A Arabic", name_fr : "\u0639\u0631\u0628\u064A Arabe", subd : "arabic", dir : "rtl"},
+  {code : "zh", name_en : "\u4E2D\u6587\uFF08\u7B80\u4F53\u5B57\uFF09 Chinese (Simplified)", name_fr : "\u4E2D\u6587\uFF08\u7B80\u4F53\u5B57\uFF09 Chinois (simplifi\u00E9)", subd : "chinese", dir : "ltr"},
+  {code : "en", name_en : "English", name_fr : "English Anglais", subd : "english", dir : "ltr"},
+  {code : "fr", name_en : "Fran\u00E7ais French", name_fr : "Fran\u00E7ais", subd : "french", dir : "ltr"},
+  {code : "gu", name_en : "\u0A97\u0AC1\u0A9C\u0AB0\u0ABE\u0AA4\u0AC0 Gujarati", name_fr : "\u0A97\u0AC1\u0A9C\u0AB0\u0ABE\u0AA4\u0AC0 Gujarati", subd : "gujarati", dir : "ltr"},
+  {code : "tl", name_en : "Pilipino (Tagalog)", name_fr : "Pilipino (tagal)", subd : "tagalog", dir : "ltr"},
+  {code : "pa", name_en : "\u0A2A\u0A70\u0A1C\u0A3E\u0A2C\u0A40 Punjabi", name_fr : "\u0A2A\u0A70\u0A1C\u0A3E\u0A2C\u0A40 Punjabi", subd : "punjabi", dir : "ltr"},
+  {code : "ru", name_en : "\u0420\u0443\u0441\u0441\u043A\u0438\u0439 Russian", name_fr : "\u0420\u0443\u0441\u0441\u043A\u0438\u0439 Russe", subd : "russian", dir : "ltr"},
+  {code : "es", name_en : "Espa\u00F1ol Spanish", name_fr : "Espa\u00F1ol Espagnol", subd : "spanish", dir : "ltr"},
+  {code : "ta", name_en : "\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD Tamil", name_fr : "\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD Tamoul", subd : "tamil", dir : "ltr"},
+  {code : "ur", name_en : "\u0627\u0631\u062F\u0648 Urdu", name_fr : "\u0627\u0631\u062F\u0648 Urdu", subd : "urdu", dir : "rtl"}
+];
+
+/*
+Parameters:
+classNames
+url
+*/
+OI.utils.createIMLSelector = function(p) {
+
+    if(p.classNames) {
+      document.write("<span class='" + p.classNames + "'>");
+    }
+
+    var id = 'iml_sel_' + (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+
+    document.write("<select id='" + id + "'>");
+ 
+    var pname = location.pathname;
+    var key;
+
+    if( pname.indexOf("/en/") != -1 ) {
+        document.write("<option selected='selected'>Choose your language</option>");
+        key = "name_en";
+    } else {
+        document.write("<option selected='selected'>Choisissez votre langue</option>");
+        key = "name_fr";
+    }
+
+    for( var i = 0; i < OI.utils.IMLLangs.length; i++)  {
+        var item = OI.utils.IMLLangs[i];
+        document.write("<option value='" + item.code + "' >" + item[key] + "</option>");
+    }
+
+    document.write("</select>");
+
+    if(p.classNames) {
+      document.write("</span>");
+    }
+
+    var sel_el = document.getElementById(id);
+
+    sel_el.onchange = function() {
+        if(this.selectedIndex > 0) {
+          var lang = this.options[this.selectedIndex].value;
+          var joiner = p.url.indexOf("?") == -1 ? "?" : "&";
+          document.location = p.url + joiner + "lang=" + lang;
+        }
+    }
+
+}
+
+
+/* --- oi_utils namespace DEPRECATED, for templates compatability only */
+oi_utils = {};
+
+// create more link
+oi_utils.morelink = new MoreLink("relatedmenu");
+
+oi_utils.hasClassAttr = OI.utils.hasClassAttr;
+oi_utils.addClassAttr = OI.utils.addClassAttr;
+oi_utils.removeClassAttr = OI.utils.removeClassAttr;
+oi_utils.getClassList = OI.utils.getClassList;
+oi_utils.trim = OI.utils.trim;
+
+
+/* IE fix */
+try { document.execCommand("BackgroundImageCache",false,true); } catch(e) { }

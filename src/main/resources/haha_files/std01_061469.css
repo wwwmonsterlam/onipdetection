@@ -1,0 +1,106 @@
+@charset "utf-8";
+/**
+ * print.css
+ * @version $Id: print.css 38 2009-07-03 20:51:49Z ian $
+*/
+/* CSS Document */
+/*
+
+/* -ZERO OUT EVERYTHING - * ---------------------------------------------------------------- */
+/* -this css sets all padding, margins, defaults to 0 - * ---------------------------------- */
+/* tables still need 'cellspacing="0"' in the markup */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;	padding: 0;	border: 0;	outline: 0;	font-size: 1em;	vertical-align: baseline;	background: transparent}
+ol, ul { 
+	margin-left: 20px; 	margin-bottom: 20px }
+body { 
+	background-color: #FFF; 
+	color: #000; 
+	font: 10pt Verdana, Helvetica, Arial, sans-serif; 
+	text-align: left
+}
+
+.noprint {
+    display : none;
+}
+
+#left_column, #arc, #navbar, #textlinks, #right_column #pageActions, #right_nav, #ad_banner, #banner
+{
+    display : none;
+}
+
+.popular_topics_row, .before_after_row, .guide_buttons_row, .banner_row, .opportunity_buttons_row {
+    display : none;
+}
+
+#breadcrumb {
+    margin : 1em 0;
+}
+
+a img,a:link img, a:visited img, a:hover img, .icon a { text-decoration: none}
+p {	margin: 1em 0 }
+
+.highlight_box {
+    border : 2px solid #CCC;
+    font-size : 90%;
+    padding : 0.5em;
+}
+
+.highlight_box h3 {
+    margin-top : 0;
+}
+
+.highlight_imgcap {
+    display : none;
+}
+
+/* -------- HEADERS --------- */
+h1, h2, h3, h4, h5, h6 { color: #000; font-weight: bold; margin : 2em 0 0 0}
+h1 { font-size: 1.4em; }
+h2 { font-size: 1.2em}
+h3, h4 { font-size: 1.1em}
+
+img {	border: 0;	text-align: left }
+#right_column { /* content area */
+	width : 100%;
+	float: right;
+	line-height: 140%
+}
+
+
+#right_column img.printhide, #mediaPlayer, #videoPlayer, #footer, #pageActions, #pageActions.ul, #header, .nav_top, .nav_bottom, .main_top, .photo_top, .photo_bottom, .icon_top, .icon_bottom, .more img, .more, #banner, a#skipNav:link, a#skipNav:visited, a#skipNav:hover, .two_cols .split_lrg .content img { display: block }
+
+.noborder	  { border: 0 }
+.nomargin     { margin: 0 }
+
+.grid_1,.grid_2,.grid_3,.grid_4,.grid_5,.grid_6,.grid_7,.grid_8,.grid_8plus,.grid_9,.grid_10,.grid_11,.grid_12,.grid_13,.grid_14,.grid_15,.grid_16, .grid_6plus,.grid_7plus,.grid_9plus,.grid_10plus,.grid_11plus,.grid_12plus,.grid_13plus,.grid_14plus,.grid_15plus,.grid_16plus
+{display:block;float:right}
+
+.content:after {
+	clear: both
+}
+#banner, #tab_menu, #tab_menu_services, .left, .pageFind, .more, .spacerTop, .promo, .small, .thick {display: block} 
+#right_column .two_cols .column, #right_column .two_cols .column .header, #right_column .three_cols .column, #right_column .three_cols .column .header, .three_cols .column, .two_thirds .column, .two_thirds .column .header, .two_cols .split_lrg h3, .two_cols .split_lrg .content ul, .two_cols .split_lrg .content p, .two_thirds .other   { float: right;	display: block; background-image: none; background-color: #fff}
+
+
+#footer {
+    clear : both;
+    font-size : 80%;
+
+}
+
+#footer p.left {
+    padding-top : 0.5em;
+    margin-top : 0.5em;
+    text-align : right;    
+    display : none;
+}
