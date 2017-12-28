@@ -4,8 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -53,11 +51,17 @@ public class PnpAcceptionChangeDetection extends Thread{
 			try {
 				driver.findElement(By.xpath("//*[text()[contains(., '" + keyword + "')]]"));
 			} catch(NoSuchElementException e) {
-				// information found and play a song as alarm
-				playASong();
+				// check it again after 5 seconds
+				Thread.sleep(5000);
+				try {
+					driver.findElement(By.xpath("//*[text()[contains(., '" + keyword + "')]]"));
+				} catch(NoSuchElementException ee) {
+					// information found and play a song as alarm
+					playASong();
+				}
 			}
 
-			Thread.sleep(5000);
+			Thread.sleep(20000);
 		}
 	}
 	
@@ -70,7 +74,7 @@ public class PnpAcceptionChangeDetection extends Thread{
 		
 		while(true) {
 			try {
-				driver.findElement(By.xpath("//li[@class='active ng-binding']"));
+				driver.findElement(By.xpath("//*[text()[contains(.,'Note: If the OINP is experiencing')]]"));
 			} catch (NoSuchElementException e) {
 				logger.info("element not found~");
 				continue;
