@@ -19,7 +19,7 @@ import javazoom.jl.player.Player;
 public class PnpAcceptionChangeDetection extends Thread{
 	public static final Logger logger = LoggerFactory.getLogger(PnpAcceptionChangeDetection.class);
 	public  WebDriver driver;
-	public final String keyword = "Stream have reached its registration intake limit";
+	public final String keyword = "close/exit";
 	
 	public PnpAcceptionChangeDetection() {
 		System.setProperty("webdriver.chrome.driver", "D:\\Desktop\\chromedriver\\chromedriver.exe");
@@ -71,12 +71,19 @@ public class PnpAcceptionChangeDetection extends Thread{
 //		String testFilePath = URLDecoder.decode(Main.class.getClassLoader().getResource("").getPath()) + "ha.html";
 //		logger.info(testFilePath.substring(1));
 //		driver.navigate().to(testFilePath.substring(1));
+		int count = 0;
 		
 		while(true) {
 			try {
 				driver.findElement(By.xpath("//*[text()[contains(.,'Note: If the OINP is experiencing')]]"));
 			} catch (NoSuchElementException e) {
 				logger.info("element not found~");
+				count++;
+				if(count == 10) {
+					count = 0;
+					driver.navigate().refresh();
+					logger.info("Web page refreshed!~~");
+				}
 				continue;
 			}
 			
